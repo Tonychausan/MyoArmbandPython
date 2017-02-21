@@ -1,8 +1,9 @@
 import json
+import numpy
 
-import DataUtility
+import DataUtility as DataUtility
 import Constants as Constant
-import Utility
+import Utility as Utility
 from DataUtility import Sensor, Gesture, DataSetFormat, DataSetType
 
 class DataHandler:
@@ -37,20 +38,10 @@ class DataHandler:
             return []
 
 class FileDataHandler(DataHandler):
-    def __init__(self, file, dataset_type):
+    def __init__(self, file):
         super().__init__()
         self.file = file
-        # filename = "../" + Constant.DATA_SET_FOLDER
-        # filename = filename + Constant.COMPRESSED_DATA_FOLDER
-        #
-        # if dataset_type == DataSetType.TRAINING:
-        #     filename = filename + Constant.TRAINING_SET_FOLDER
-        # else:
-        #     filename = filename + Constant.TEST_SET_FOLDER
-        #
-        # filename = filename + file.filename
-        #
-        # self.file = DataUtility.File(file.path, file.filename, file.gesture)
+        self.file_to_data()
 
     def json_data_to_data_by_sensor(self, json_data, sensor):
         json_array_name = Utility.get_json_array_name_for_sensor(sensor)
@@ -58,11 +49,13 @@ class FileDataHandler(DataHandler):
 
         data_array = json_data[json_array_name][json_data_table_name]
 
+
         self.set_sensor_data(data_array, sensor)
 
     # Function: file_to_data
     # ----------------------------
     #   Generate data from the json file
+    #
     def file_to_data(self):
         with open(self.file.get_file_path()) as json_file:
             json_data = json.load(json_file)

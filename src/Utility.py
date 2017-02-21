@@ -1,5 +1,6 @@
 import json
 import os
+import numpy
 
 import DataUtility
 from DataUtility import DataSetFormat, DataSetType
@@ -10,7 +11,7 @@ def get_number_of_arrays_for_sensor(sensor):
         return Constant.NUMBER_OF_EMG_ARRAYS
     elif sensor == DataUtility.Sensor.ACC:
         return Constant.NUMBER_OF_ACC_ARRAYS
-    elif senosor == DataUtility.Sensor.GYR:
+    elif sensor == DataUtility.Sensor.GYR:
         return Constant.NUMBER_OF_GYR_ARRAYS
     elif sensor == DataUtility.Sensor.ORI:
         return Constant.NUMBER_OF_ORI_ARRAYS
@@ -22,7 +23,7 @@ def get_length_of_arrays_for_sensor(sensor):
         return Constant.DATA_LENGTH_EMG
     elif sensor == DataUtility.Sensor.ACC:
         return Constant.DATA_LENGTH_ACC
-    elif senosor == DataUtility.Sensor.GYR:
+    elif sensor == DataUtility.Sensor.GYR:
         return Constant.DATA_LENGTH_GYR
     elif sensor == DataUtility.Sensor.ORI:
         return Constant.DATA_LENGTH_ORI
@@ -77,7 +78,7 @@ def is_file_already_compressed(file, data_set_type):
 #
 def compress_json_file(file, data_set_type):
     print("Compressing file: " + file.filename)
-    raw_data = Utility.get_json_data_from_file(file)
+    raw_data = get_json_data_from_file(file)
 
     compressed_data = {}
 
@@ -86,8 +87,9 @@ def compress_json_file(file, data_set_type):
 
     for json_array_name , data_length in zip(json_array_name_list, data_length_list):
         compressed_data[json_array_name] = {}
-        compressed_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME] = raw_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME][:data_length]
-
+        transposed_raw_data = numpy.transpose(raw_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME][:data_length]).tolist()
+        compressed_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME] = transposed_raw_data
+        
     compressed_file_path = DataUtility.get_data_set_path(DataSetFormat.COMPRESSED, data_set_type) + file.filename
     with open(compressed_file_path, 'w') as outfile:
         json.dump(compressed_data, outfile)

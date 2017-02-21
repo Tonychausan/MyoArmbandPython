@@ -1,8 +1,19 @@
+from DataUtility import Sensor, Gesture
+
 # List of sensors to ignor in the gesture prediction
-isEmgSensorOn = True;
-isAccSensorOn = False;
-isGyrSensorOn = False;
-isOriSensorOn = False;
+is_EMG_sensor_on = True;
 
 #DTW or cross-correlation
-isDtwUsed = False;
+is_DTW_used = False;
+
+def is_sensor_on(sensor):
+    if sensor == Sensor.EMG:
+        return is_EMG_sensor_on
+    elif sensor == Sensor.ACC:
+        return is_ACC_sensor_on
+    elif sensor == Sensor.GYR:
+        return is_GYR_sensor_on
+    elif sensor == Sensor.ORI:
+        return is_ORI_sensor_on
+    else:
+        return []

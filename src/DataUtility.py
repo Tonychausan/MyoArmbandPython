@@ -35,7 +35,7 @@ class Gesture:
 
     @staticmethod
     def gesture_to_string(gesture):
-        if Gesture >= Gesture.NUMBER_OF_SENSORS:
+        if gesture >= Gesture.NUMBER_OF_GESTURES:
             return Gesture.GESTURE_NAMES[Gesture.NUMBER_OF_GESTURE]
         else:
             return Gesture.GESTURE_NAMES[gesture]
@@ -103,4 +103,4 @@ def generate_file_list(data_folder_path):
     return filelist
 
 TRAINING_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TRAINING))
-TEST_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TRAINING))
+TEST_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TEST))
