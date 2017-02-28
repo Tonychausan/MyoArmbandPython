@@ -53,6 +53,19 @@ def create_emg_training_file():
                 else:
                     outfile.write("\n")
 
+def create_emg_network_variables():
+    theta1 = tf.Variable(tf.random_uniform([N_INPUT_NODES, N_HIDDEN_NODES], -1, 1), name="theta1")
+    theta2 = tf.Variable(tf.random_uniform([N_HIDDEN_NODES, N_OUTPUT_NODES], -1, 1), name="theta2")
+
+    bias1 = tf.Variable(tf.zeros([N_HIDDEN_NODES]), name="bias1")
+    bias2 = tf.Variable(tf.zeros([N_OUTPUT_NODES]), name="bias2")
+    return (theta1, theta2, bias1, bias2)
+
+def create_emg_network_layers(input_placeholder, theta1, theta2, bias1, bias2):
+    layer1 = tf.sigmoid(tf.matmul(input_placeholder, theta1) + bias1)
+    output = tf.sigmoid(tf.matmul(layer1, theta2) + bias2)
+
+    return (layer1, output)
 
 def create_emg_network():
     inputs = []
@@ -73,14 +86,8 @@ def create_emg_network():
     input_placeholder = tf.placeholder(tf.float32, shape=[training_size, N_INPUT_NODES], name="input")
     output_placeholder = tf.placeholder(tf.float32, shape=[training_size, N_OUTPUT_NODES], name="output")
 
-    theta1 = tf.Variable(tf.random_uniform([N_INPUT_NODES, N_HIDDEN_NODES], -1, 1), name="theta1")
-    theta2 = tf.Variable(tf.random_uniform([N_HIDDEN_NODES, N_OUTPUT_NODES], -1, 1), name="theta2")
-
-    bias1 = tf.Variable(tf.zeros([N_HIDDEN_NODES]), name="bias1")
-    bias2 = tf.Variable(tf.zeros([N_OUTPUT_NODES]), name="bias2")
-
-    layer1 = tf.sigmoid(tf.matmul(input_placeholder, theta1) + bias1)
-    output = tf.sigmoid(tf.matmul(layer1, theta2) + bias2)
+    (theta1, theta2, bias1, bias2) = create_emg_network_variables()
+    (layer1, output) = create_emg_network_layers(input_placeholder, theta1, theta2, bias1, bias2)
 
     cost = tf.reduce_mean(tf.square(outputs - output))
     train_step = tf.train.GradientDescentOptimizer(LEARNING_RATE).minimize(cost)
@@ -116,18 +123,13 @@ def continue_emg_training():
     input_placeholder = tf.placeholder(tf.float32, shape=[training_size, N_INPUT_NODES], name="input")
     output_placeholder = tf.placeholder(tf.float32, shape=[training_size, N_OUTPUT_NODES], name="output")
 
-    theta1 = tf.Variable(tf.random_uniform([N_INPUT_NODES, N_HIDDEN_NODES], -1, 1), name="theta1")
-    theta2 = tf.Variable(tf.random_uniform([N_HIDDEN_NODES, N_OUTPUT_NODES], -1, 1), name="theta2")
-
-    bias1 = tf.Variable(tf.zeros([N_HIDDEN_NODES]), name="bias1")
-    bias2 = tf.Variable(tf.zeros([N_OUTPUT_NODES]), name="bias2")
+    (theta1, theta2, bias1, bias2) = create_emg_network_variables()
 
     saver = tf.train.Saver()
     with tf.Session() as sess:
         saver.restore(sess, sess_path)
 
-        layer1 = tf.sigmoid(tf.matmul(input_placeholder, theta1) + bias1)
-        output = tf.sigmoid(tf.matmul(layer1, theta2) + bias2)
+        (layer1, output) = create_emg_network_layers(input_placeholder, theta1, theta2, bias1, bias2)
 
         cost = tf.reduce_mean(tf.square(outputs - output))
         train_step = tf.train.GradientDescentOptimizer(LEARNING_RATE).minimize(cost)
@@ -152,18 +154,13 @@ def test_emg_network():
 
     input_placeholder = tf.placeholder(tf.float32, shape=[size_of_test_set, N_INPUT_NODES], name="input")
 
-    theta1 = tf.Variable(tf.random_uniform([N_INPUT_NODES, N_HIDDEN_NODES], -1, 1), name="theta1")
-    theta2 = tf.Variable(tf.random_uniform([N_HIDDEN_NODES, N_OUTPUT_NODES], -1, 1), name="theta2")
-
-    bias1 = tf.Variable(tf.zeros([N_HIDDEN_NODES]), name="bias1")
-    bias2 = tf.Variable(tf.zeros([N_OUTPUT_NODES]), name="bias2")
+    (theta1, theta2, bias1, bias2) = create_emg_network_variables()
 
     saver = tf.train.Saver()
     with tf.Session() as sess:
         saver.restore(sess, sess_path)
 
-        layer1 = tf.sigmoid(tf.matmul(input_placeholder, theta1) + bias1)
-        output = tf.sigmoid(tf.matmul(layer1, theta2) + bias2)
+        (layer1, output) = create_emg_network_layers(input_placeholder, theta1, theta2, bias1, bias2)
 
         results = sess.run(output, feed_dict={input_placeholder: test_inputs})
 
@@ -184,5 +181,5 @@ def test_emg_network():
 
 #continue_emg_training()
 #create_emg_training_file()
-test_emg_network()
+#test_emg_network()
 #create_emg_network()
