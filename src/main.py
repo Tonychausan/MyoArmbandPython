@@ -44,7 +44,7 @@ def menu():
 
         if action == 1:
             print("Try Gesture")
-            MenuActions.remove_all_compressed_files()
+            MenuActions.live_gesture_recognition()
         elif action == 2:
             MenuActions.print_myo_data(listener)
 

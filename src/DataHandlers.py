@@ -37,10 +37,33 @@ class DataHandler:
         else:
             return []
 
+    def get_emg_sums_normalized(self):
+        emg_sums = []
+        emg_sum_min = -1
+        emg_sum_max = -1
+        for emg_array in self.emg_data:
+            emg_sum = numpy.sum(numpy.square(emg_array))
+            emg_sums.append(emg_sum)
+
+            if emg_sum_min == -1:
+                emg_sum_min = emg_sum
+                emg_sum_max = emg_sum
+            elif emg_sum < emg_sum_min:
+                emg_sum_min = emg_sum
+            elif emg_sum > emg_sum_max:
+                emg_sum_max = emg_sum
+
+        for i in range(len(emg_sums)):
+            emg_sums[i] = ( float(emg_sums[i]) - emg_sum_min)  / ( float(emg_sum_max) - emg_sum_min)
+
+
+        return emg_sums
+
+
 class FileDataHandler(DataHandler):
-    def __init__(self, file):
+    def __init__(self, file_data):
         super().__init__()
-        self.file = file
+        self.file = file_data
         self.file_to_data()
 
     def json_data_to_data_by_sensor(self, json_data, sensor):
