@@ -56,8 +56,94 @@ class DataHandler:
         for i in range(len(emg_sums)):
             emg_sums[i] = ( float(emg_sums[i]) - emg_sum_min)  / ( float(emg_sum_max) - emg_sum_min)
 
-
         return emg_sums
+
+
+
+class InputDataHandler(DataHandler):
+    def __init__(self):
+        super().__init__()
+        self.reset_data()
+
+    def init_data_length_variables(self):
+        self.emg_data_length = 0
+        self.acc_data_length = 0
+        self.gyr_data_length = 0
+        self.ori_data_length = 0
+
+    def increment_data_length_variable(self, sensor):
+        if sensor == Sensor.EMG:
+            self.emg_data_length += 1
+        elif sensor == Sensor.ACC:
+            self.acc_data_length += 1
+        elif sensor == Sensor.GYR:
+            self.gyr_data_length += 1
+        elif sensor == Sensor.ORI:
+            self.ori_data_length += 1
+        else:
+            return None
+
+    def init_empyt_data(self):
+        for i in range(Constant.NUMBER_OF_EMG_ARRAYS):
+            self.emg_data.append([])
+        for i in range(Constant.NUMBER_OF_ACC_ARRAYS):
+            self.acc_data.append([])
+        for i in range(Constant.NUMBER_OF_GYR_ARRAYS):
+            self.gyr_data.append([])
+        for i in range(Constant.NUMBER_OF_ORI_ARRAYS):
+            self.ori_data.append([])
+
+    def append_data(self, sensor, data):
+        if sensor == Sensor.EMG:
+            sensor_data = self.emg_data
+        elif sensor == Sensor.ACC:
+            sensor_data = self.acc_data
+        elif sensor == Sensor.GYR:
+            sensor_data = self.gyr_data
+        elif sensor == Sensor.ORI:
+            data = [data.x, data.y, data.z, data.w]
+            sensor_data = self.ori_data
+        else:
+            return None
+
+        for i in range(Utility.get_number_of_arrays_for_sensor(sensor)):
+            sensor_data[i].append(data[i])
+
+        self.increment_data_length_variable(sensor)
+
+    def reset_data(self):
+        self.emg_data = []
+        self.acc_data = []
+        self.gyr_data = []
+        self.ori_data = []
+        self.init_empyt_data()
+        self.init_data_length_variables()
+
+    def get_data_length(self, sensor):
+        if sensor == Sensor.EMG:
+            return self.emg_data_length
+        elif sensor == Sensor.ACC:
+            return self.acc_data_length
+        elif sensor == Sensor.GYR:
+            return self.gyr_data_length
+        elif sensor == Sensor.ORI:
+            return self.ori_data_length
+        else:
+            return None
+
+    def create_json_file(self, filename):
+        json_data = {}
+        for sensor in range(Sensor.NUMBER_OF_SENSORS):
+            json_array_name = Utility.get_json_array_name_for_sensor(sensor)
+            json_data_table_name = Constant.JSON_ARRAY_DATA_TABLE_NAME
+
+            json_data[json_array_name] = {}
+            json_data[json_array_name][json_data_table_name] = self.get_sensor_data(sensor)
+
+        folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
+        with open(folder_path + filename, 'w') as outfile:
+            json.dump(json_data, outfile)
+
 
 
 class FileDataHandler(DataHandler):

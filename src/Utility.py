@@ -18,6 +18,18 @@ def get_number_of_arrays_for_sensor(sensor):
     else:
         return None
 
+def get_frequency_of_sensor(sensor):
+    if sensor == DataUtility.Sensor.EMG:
+        return Constant.FREQUENCY_EMG
+    elif sensor == DataUtility.Sensor.ACC:
+        return Constant.FREQUENCY_ACC
+    elif sensor == DataUtility.Sensor.GYR:
+        return Constant.FREQUENCY_GYR
+    elif sensor == DataUtility.Sensor.ORI:
+        return Constant.FREQUENCY_ORI
+    else:
+        return None
+
 def get_length_of_arrays_for_sensor(sensor):
     if sensor == DataUtility.Sensor.EMG:
         return Constant.DATA_LENGTH_EMG
@@ -89,7 +101,7 @@ def compress_json_file(file, data_set_type):
         compressed_data[json_array_name] = {}
         transposed_raw_data = numpy.transpose(raw_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME][:data_length]).tolist()
         compressed_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME] = transposed_raw_data
-        
+
     compressed_file_path = DataUtility.get_data_set_path(DataSetFormat.COMPRESSED, data_set_type) + file.filename
     with open(compressed_file_path, 'w') as outfile:
         json.dump(compressed_data, outfile)

@@ -9,8 +9,8 @@ import DataHandlers as DataHandlers
 # Constants
 size_of_training_set = len(DataUtility.TRAINING_FILE_LIST)
 size_of_test_set = len(DataUtility.TEST_FILE_LIST)
-training_data_file_path = '../data/nn_data/emg_network/training_file.data'
-sess_path = '../data/nn_data/emg_network/session/emg_model'
+TRAINING_DATA_FILE_PATH = '../data/nn_data/emg_network/training_file.data'
+SESS_PATH = '../data/nn_data/emg_network/session/emg_model'
 
 
 # Neural Network Parameters
@@ -25,7 +25,7 @@ LEARNING_RATE = 0.05
 
 def create_emg_training_file():
     print("Creating EMG-training file")
-    with open(training_data_file_path, 'w') as outfile:
+    with open(TRAINING_DATA_FILE_PATH, 'w') as outfile:
         outfile.write(str(size_of_training_set) + " ")
         outfile.write(str(N_INPUT_NODES) + " ")
         outfile.write(str(N_OUTPUT_NODES) + "\n")
@@ -71,7 +71,7 @@ def create_emg_network():
     inputs = []
     outputs = []
 
-    with open(training_data_file_path, 'r') as training_data_file:
+    with open(TRAINING_DATA_FILE_PATH, 'r') as training_data_file:
         (training_size, n_inputs, n_outputs) = training_data_file.readline().split()
 
         line_counter = 0
@@ -102,13 +102,13 @@ def create_emg_network():
             print('Batch ', i)
 
     saver = tf.train.Saver()
-    saver.save(sess, sess_path)
+    saver.save(sess, SESS_PATH)
 
 def continue_emg_training():
     inputs = []
     outputs = []
 
-    with open(training_data_file_path, 'r') as training_data_file:
+    with open(TRAINING_DATA_FILE_PATH, 'r') as training_data_file:
         (training_size, n_inputs, n_outputs) = training_data_file.readline().split()
 
         line_counter = 0
@@ -127,7 +127,7 @@ def continue_emg_training():
 
     saver = tf.train.Saver()
     with tf.Session() as sess:
-        saver.restore(sess, sess_path)
+        saver.restore(sess, SESS_PATH)
 
         (layer1, output) = create_emg_network_layers(input_placeholder, theta1, theta2, bias1, bias2)
 
@@ -139,7 +139,7 @@ def continue_emg_training():
             if i % N_EPOCH == 0:
                 print('Batch ', i)
 
-        saver.save(sess, sess_path)
+        saver.save(sess, SESS_PATH)
 
 
 
@@ -149,7 +149,7 @@ def test_emg_network():
         data_handler = DataHandlers.FileDataHandler(test_file)
         test_inputs.append(data_handler.get_emg_sums_normalized())
 
-    with open(training_data_file_path, 'r') as training_data_file:
+    with open(TRAINING_DATA_FILE_PATH, 'r') as training_data_file:
         (training_size, n_inputs, n_outputs) = training_data_file.readline().split()
 
     input_placeholder = tf.placeholder(tf.float32, shape=[size_of_test_set, N_INPUT_NODES], name="input")
@@ -158,7 +158,7 @@ def test_emg_network():
 
     saver = tf.train.Saver()
     with tf.Session() as sess:
-        saver.restore(sess, sess_path)
+        saver.restore(sess, SESS_PATH)
 
         (layer1, output) = create_emg_network_layers(input_placeholder, theta1, theta2, bias1, bias2)
 
@@ -178,7 +178,36 @@ def test_emg_network():
     for result, test_file in zip(results, DataUtility.TEST_FILE_LIST):
         print(Gesture.gesture_to_string(test_file.gesture), " -> ", Gesture.gesture_to_string(np.argmax(result)))
 
+def input_test_emg_network(input_data_handler):
+    test_inputs = [input_data_handler.get_emg_sums_normalized()]
+    with open(TRAINING_DATA_FILE_PATH, 'r') as training_data_file:
+        (training_size, n_inputs, n_outputs) = training_data_file.readline().split()
 
+    input_placeholder = tf.placeholder(tf.float32, shape=[1, N_INPUT_NODES], name="input")
+
+    (theta1, theta2, bias1, bias2) = create_emg_network_variables()
+
+    saver = tf.train.Saver()
+    with tf.Session() as sess:
+        saver.restore(sess, SESS_PATH)
+
+        (layer1, output) = create_emg_network_layers(input_placeholder, theta1, theta2, bias1, bias2)
+
+        results = sess.run(output, feed_dict={input_placeholder: test_inputs})
+
+    for result, test_file in zip(results, DataUtility.TEST_FILE_LIST):
+        print("\n###########################################################")
+        for gesture in range(Gesture.NUMBER_OF_GESTURES):
+            print(Gesture.gesture_to_string(gesture), result[gesture])
+
+        print()
+        print("Recognized: " + Gesture.gesture_to_string(np.argmax(result)))
+
+    tf.reset_default_graph()
+
+
+#data_handler = DataHandlers.FileDataHandler(DataUtility.TEST_FILE_LIST[0])
+#input_test_emg_network(data_handler)
 #continue_emg_training()
 #create_emg_training_file()
 #test_emg_network()

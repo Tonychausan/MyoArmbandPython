@@ -3,6 +3,7 @@ import os
 import Constants as Constant
 
 
+
 class Sensor:
     NUMBER_OF_SENSORS = Constant.NUMBER_OF_SENSORS
 
@@ -47,6 +48,7 @@ class DataSetFormat:
 class DataSetType:
     TRAINING = 0
     TEST = 1
+    RECORDED = 2
 
 class File:
     def __init__(self, filename, gesture):
@@ -82,6 +84,8 @@ def get_data_set_path(data_format, data_type):
     type_folder = Constant.TEST_SET_FOLDER
     if (data_type == DataSetType.TRAINING):
         type_folder = Constant.TRAINING_SET_FOLDER
+    elif data_type == DataSetType.RECORDED:
+        type_folder = Constant.RECORDED_SET_FOLDER
     path = path + type_folder
 
     return path
@@ -101,6 +105,17 @@ def generate_file_list(data_folder_path):
         filelist.append(File(data_folder_path, filename, gesture))
 
     return filelist
+
+def get_gesture_file_count_in_folder(folder_path):
+    file_list = generate_file_list(folder_path)
+
+    gesture_file_counts = [0] * Gesture.NUMBER_OF_GESTURES
+
+    for f in file_list:
+        gesture_file_counts[f.gesture] += 1
+
+    return gesture_file_counts
+
 
 TRAINING_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TRAINING))
 TEST_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TEST))

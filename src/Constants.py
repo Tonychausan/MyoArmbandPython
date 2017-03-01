@@ -36,6 +36,7 @@ RAW_DATA_FOLDER = "raw_files/"
 COMPRESSED_DATA_FOLDER = "compressed_files/"
 TEST_SET_FOLDER = "test_set/"
 TRAINING_SET_FOLDER = "training_set/"
+RECORDED_SET_FOLDER = "recorded_set/"
 
 # Pewter json constants
 JSON_ARRAY_DATA_TABLE_NAME = "data"
