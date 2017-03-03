@@ -99,9 +99,16 @@ def compress_json_file(file, data_set_type):
 
     for json_array_name , data_length in zip(json_array_name_list, data_length_list):
         compressed_data[json_array_name] = {}
-        transposed_raw_data = numpy.transpose(raw_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME][:data_length]).tolist()
+        if file.is_recorded:
+            transposed_raw_data = numpy.transpose(raw_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME][:data_length]).tolist()
+        else:
+            transposed_raw_data = raw_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME][:data_length]
         compressed_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME] = transposed_raw_data
 
     compressed_file_path = DataUtility.get_data_set_path(DataSetFormat.COMPRESSED, data_set_type) + file.filename
     with open(compressed_file_path, 'w') as outfile:
         json.dump(compressed_data, outfile)
+
+
+def NormalizeArray(array):
+    return array/numpy.linalg.norm(array)

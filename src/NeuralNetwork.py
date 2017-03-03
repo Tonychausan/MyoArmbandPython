@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+import time
 
 import Constants as Constant
 from DataUtility import Sensor, Gesture, DataSetFormat, DataSetType, File
@@ -17,7 +18,7 @@ SESS_PATH = '../data/nn_data/emg_network/session/emg_model'
 N_STEPS = 500000
 N_EPOCH = 5000
 
-N_INPUT_NODES = Constant.NUMBER_OF_EMG_ARRAYS
+N_INPUT_NODES = Constant.NUMBER_OF_EMG_ARRAYS * 2# + (int(np.ceil(Constant.DATA_LENGTH_EMG/Constant.EMG_INTERVAL_LENGTH)))*8
 N_HIDDEN_NODES = 16
 N_OUTPUT_NODES  = Constant.NUMBER_OF_GESTURES
 LEARNING_RATE = 0.05
@@ -164,6 +165,8 @@ def test_emg_network():
 
         results = sess.run(output, feed_dict={input_placeholder: test_inputs})
 
+        writer = tf.summary.FileWriter("../data/nn_data/emg_network/log", sess.graph_def)
+
     for result, test_file in zip(results, DataUtility.TEST_FILE_LIST):
         print("\n###########################################################")
         for gesture in range(Gesture.NUMBER_OF_GESTURES):
@@ -179,6 +182,7 @@ def test_emg_network():
         print(Gesture.gesture_to_string(test_file.gesture), " -> ", Gesture.gesture_to_string(np.argmax(result)))
 
 def input_test_emg_network(input_data_handler):
+    start_time = time.time()
     test_inputs = [input_data_handler.get_emg_sums_normalized()]
     with open(TRAINING_DATA_FILE_PATH, 'r') as training_data_file:
         (training_size, n_inputs, n_outputs) = training_data_file.readline().split()
@@ -204,6 +208,8 @@ def input_test_emg_network(input_data_handler):
         print("Recognized: " + Gesture.gesture_to_string(np.argmax(result)))
 
     tf.reset_default_graph()
+    print("Analyse time:", "%.2fsec"%(time.time()-start_time))
+    return np.argmax(result)
 
 
 #data_handler = DataHandlers.FileDataHandler(DataUtility.TEST_FILE_LIST[0])

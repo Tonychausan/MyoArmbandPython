@@ -37,28 +37,31 @@ def print_menu(menu_item_list):
     for i in range(len(menu_item_list)):
         print(str(i) + ")", menu_item_list[i].menu_text)
     print()
-    action = -1
-    while action == -1:
+
+    action = check_int_input_value(min=0, max=len(menu_item_list))
+    return action
+
+def check_int_input_value(min, max, empty_input_allowed=False):
+    action = min - 1
+    while action < min:
         action = input( "Choose an action: " )
-        action = check_int_input_value(action, min=0, max=len(menu_item_list))
-    return action
+        if empty_input_allowed and action == "":
+            return min-1
+        try:
+            action = int(action)
+        except ValueError:
+            print("That's not an int!")
+            action = -1
+            continue
 
-def check_int_input_value(action, min, max):
-    try:
-        action = int(action)
-    except ValueError:
-        print("That's not an int!")
-        action = -1
+        if action >= max:
+            print ("That's a high int!")
+            action = min-1
+        elif action < 0:
+            print ("That's a low int!")
+            action = min-1
+
         return action
-
-    if action >= max:
-        print ("That's a high int!")
-        action = -1
-    elif action < 0:
-        print ("That's a low int!")
-        action = -1
-
-    return action
 
 def print_myo_data():
     libmyo.init('../myo-sdk-win-0.9.0/bin')
@@ -156,18 +159,19 @@ def live_gesture_recognition():
     hub.shutdown()  # !! crucial
 
 def create_gesture_files():
-    folder_path = '../data/raw_files/recorded_set/'
-
-    print("Try Gesture")
     libmyo.init('../myo-sdk-win-0.9.0/bin')
     listener = DeviceListener.LiveGestureListener()
     listener.expand_data_length(time_margin=1.5)
     hub = libmyo.Hub()
     hub.run(2000, listener)
 
+    print("Create record data set")
+
+    last_file = None;
     try:
         while True:
             print()
+            print("#################################################################################")
             input("Press Enter to continue...")
             listener.recording_on()
             sleep(2.0)
@@ -175,27 +179,37 @@ def create_gesture_files():
                 pass
 
             folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
-            gesture_file_count_list = DataUtility.get_gesture_file_count_in_folder(folder_path)
+
+            recognized_gesture = NeuralNetwork.input_test_emg_network(listener.data_handler)
 
             # Print number to gesture table
             print()
             for gesture in range(Gesture.NUMBER_OF_GESTURES):
-                print(gesture, "->", Gesture.gesture_to_string(gesture), "\t" , end="")
-            print(Gesture.NUMBER_OF_GESTURES, "->", "exit...")
+                print(gesture, "->", Gesture.gesture_to_string(gesture), "         ", end="")
+            print()
+            print(Gesture.NUMBER_OF_GESTURES, "->", "remove last file...")
+            print(Gesture.NUMBER_OF_GESTURES + 1, "->", "continue...")
 
-            gesture_recorded = -1
-            while gesture_recorded == -1:
-                gesture_recorded = input("Recorded gesture: ")
-                gesture_recorded = check_int_input_value(gesture_recorded , min=0, max=Gesture.NUMBER_OF_GESTURES + 1)
+            gesture_recorded = check_int_input_value(min=0, max=Gesture.NUMBER_OF_GESTURES + 2,  empty_input_allowed=True)
+            if gesture_recorded == -1:
+                gesture_recorded = recognized_gesture
 
             if(gesture_recorded == Gesture.NUMBER_OF_GESTURES):
+                if(last_file != None):
+                    os.remove(last_file.get_file_path())
+                    print("Removed file:", last_file.filename)
+                    last_file = None
+                else:
+                    print("No last file, remove it manually")
+                continue
+            if(gesture_recorded == Gesture.NUMBER_OF_GESTURES + 1):
                 continue
 
+            gesture_file_count_list = DataUtility.get_gesture_file_count_in_folder(folder_path)
             file_number = gesture_file_count_list[gesture_recorded]
-            filename = "recorded-" + Gesture.gesture_to_string(gesture_recorded) + "-" + str(file_number)
+            filename = "recorded-" + Gesture.gesture_to_string(gesture_recorded) + "-" + str(file_number) + ".json"
 
-            listener.data_handler.create_json_file(filename)
-
+            last_file = listener.data_handler.create_json_file(filename)
 
 
     except KeyboardInterrupt:

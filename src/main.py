@@ -18,6 +18,6 @@ def menu():
     menu_item_list[action].function()
 
 def main():
-     menu()
+    menu()
 
 main()

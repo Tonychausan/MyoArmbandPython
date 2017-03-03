@@ -6,6 +6,7 @@ import Constants as Constant
 import Utility as Utility
 from DataUtility import Sensor, Gesture, DataSetFormat, DataSetType
 
+
 class DataHandler:
     def __init__(self):
         self.emg_data = []
@@ -42,7 +43,7 @@ class DataHandler:
         emg_sum_min = -1
         emg_sum_max = -1
         for emg_array in self.emg_data:
-            emg_sum = numpy.sum(numpy.square(emg_array))
+            emg_sum = numpy.sum(numpy.square(emg_array[:Constant.DATA_LENGTH_EMG]))
             emg_sums.append(emg_sum)
 
             if emg_sum_min == -1:
@@ -53,12 +54,39 @@ class DataHandler:
             elif emg_sum > emg_sum_max:
                 emg_sum_max = emg_sum
 
-        for i in range(len(emg_sums)):
-            emg_sums[i] = ( float(emg_sums[i]) - emg_sum_min)  / ( float(emg_sum_max) - emg_sum_min)
+        emg_sums = Utility.NormalizeArray(emg_sums)
+        emg_sums = numpy.append(emg_sums, self.get_waveform_length_of_emg()).flatten()
 
+        #emg_sums = numpy.append(emg_sums, self.get_emg_sum_of_intervals()).flatten()
         return emg_sums
 
+    def get_emg_sum_of_intervals(self):
+        interval_length = Constant.EMG_INTERVAL_LENGTH
+        number_of_intervals = int(numpy.ceil(Constant.DATA_LENGTH_EMG/interval_length))
 
+        emg_interval_sums = [[]] * Constant.NUMBER_OF_EMG_ARRAYS
+
+        for i in range(Constant.NUMBER_OF_EMG_ARRAYS):
+            emg_interval_sums[i] = numpy.array_split(self.emg_data[i][:Constant.DATA_LENGTH_EMG],number_of_intervals)
+
+        for i in range(Constant.NUMBER_OF_EMG_ARRAYS):
+            for j in range(number_of_intervals):
+                emg_interval_sums[i][j] = numpy.sum(numpy.square(emg_interval_sums[i][j]))
+
+
+        return  Utility.NormalizeArray([item for sublist in emg_interval_sums for item in sublist])
+
+    def get_waveform_length_of_emg(self):
+        emg_waveform_length_list = []
+
+        for emg_array in self.emg_data:
+            emg_waveform = numpy.subtract(emg_array[:Constant.DATA_LENGTH_EMG-1], emg_array[1:Constant.DATA_LENGTH_EMG])
+            emg_waveform = numpy.sum(numpy.absolute(emg_waveform))
+            emg_waveform_length_list.append(emg_waveform)
+
+
+        emg_waveform_length_list = Utility.NormalizeArray(emg_waveform_length_list)
+        return emg_waveform_length_list
 
 class InputDataHandler(DataHandler):
     def __init__(self):
@@ -132,6 +160,8 @@ class InputDataHandler(DataHandler):
             return None
 
     def create_json_file(self, filename):
+        print("Creating file:", filename)
+
         json_data = {}
         for sensor in range(Sensor.NUMBER_OF_SENSORS):
             json_array_name = Utility.get_json_array_name_for_sensor(sensor)
@@ -143,6 +173,10 @@ class InputDataHandler(DataHandler):
         folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
         with open(folder_path + filename, 'w') as outfile:
             json.dump(json_data, outfile)
+
+        o_file = DataUtility.File(folder_path, filename, None)
+
+        return o_file
 
 
 

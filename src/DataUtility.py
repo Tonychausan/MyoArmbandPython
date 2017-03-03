@@ -55,11 +55,13 @@ class File:
         self.filename = filename
         self.gesture = gesture
         self.path = ""
+        self.is_recorded = False
 
-    def __init__(self, path, filename, gesture):
+    def __init__(self, path, filename, gesture, is_recorded=False):
         self.filename = filename
         self.gesture = gesture
         self.path = path
+        self.is_recorded = is_recorded
 
     def get_file_path(self):
         return self.path + self.filename
@@ -102,8 +104,10 @@ def generate_file_list(data_folder_path):
     filelist = []
     for filename in os.listdir(data_folder_path):
         gesture = get_gesture_from_filename(filename)
-        filelist.append(File(data_folder_path, filename, gesture))
-
+        if "recorded" in filename.lower():
+            filelist.append(File(data_folder_path, filename, gesture))
+        else:
+            filelist.append(File(data_folder_path, filename, gesture, is_recorded=True))
     return filelist
 
 def get_gesture_file_count_in_folder(folder_path):
@@ -119,3 +123,5 @@ def get_gesture_file_count_in_folder(folder_path):
 
 TRAINING_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TRAINING))
 TEST_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TEST))
+TEST_FILE_LIST.extend(generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.RECORDED)))
+#TRAINING_FILE_LIST.extend(TEST_FILE_LIST)
