@@ -260,7 +260,7 @@ def test_emg_network():
     print("#############################################################")
     print("Success Rate")
     for i in range(Gesture.NUMBER_OF_GESTURES):
-        print('{:.15s}\t{:4d} of {:4d}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0]))
+        print('{:15s}\t{:4d} of {:4d}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0]))
 
 def input_test_emg_network(input_data_handler):
     test_inputs = [input_data_handler.get_emg_sums_normalized()]
@@ -285,7 +285,7 @@ def print_results(results):
     for result in results:
         print("\n###########################################################")
         for gesture in range(Gesture.NUMBER_OF_GESTURES):
-            print(Gesture.gesture_to_string(gesture), result[gesture])
+            print('{:15s}\t{:10f}'.format(Gesture.gesture_to_string(gesture), result[gesture]))
 
     print()
     print("Recognized: " + Gesture.gesture_to_string(np.argmax(results)))
