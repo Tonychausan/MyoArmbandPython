@@ -1,6 +1,7 @@
 import myo as libmyo
 import os
 import json
+import numpy
 from time import sleep
 
 import DataUtility as DataUtility
@@ -25,9 +26,9 @@ def create_main_menu():
     menu_item_list.append(MenuItem("Measurment display", print_myo_data))
     menu_item_list.append(MenuItem("Compress Files", compress_json_files))
     menu_item_list.append(MenuItem("Delete all compressed files", remove_all_compressed_files))
-    menu_item_list.append(MenuItem("Pre-data gesture comparison", compare_prerecorded_files))
-    menu_item_list.append(MenuItem("Create gesture files", create_gesture_files))
-    menu_item_list.append(MenuItem("Test Neural Network", neural_network_testing))
+    menu_item_list.append(MenuItem("Pre-data gesture test", compare_prerecorded_files))
+    menu_item_list.append(MenuItem("Create Gesture-files", create_gesture_files))
+    menu_item_list.append(MenuItem("Neural Network Menu", neural_network_testing))
     return menu_item_list
 
 def print_menu(menu_item_list):
@@ -39,6 +40,7 @@ def print_menu(menu_item_list):
     print()
 
     action = check_int_input_value(min=0, max=len(menu_item_list))
+    os.system('cls')
     return action
 
 def check_int_input_value(min, max, empty_input_allowed=False):
@@ -124,16 +126,16 @@ def neural_network_testing():
     nn_menu_list = []
     nn_menu_list.append(MenuItem("Create training file", NeuralNetwork.create_emg_training_file))
     nn_menu_list.append(MenuItem("Create network", NeuralNetwork.create_emg_network))
-    nn_menu_list.append(MenuItem("Train network", NeuralNetwork.continue_emg_training))
+    nn_menu_list.append(MenuItem("Train network", NeuralNetwork.continue_emg_network_training))
     nn_menu_list.append(MenuItem("Test data", NeuralNetwork.test_emg_network))
 
-    os.system('cls')
-    print("Neural Network menu")
-    print("####################################################")
-    action = print_menu(nn_menu_list)
-    nn_menu_list[action].function()
-
-    input("Press Enter to continue...")
+    while True:
+        os.system('cls')
+        print("Neural Network menu")
+        print("####################################################")
+        action = print_menu(nn_menu_list)
+        nn_menu_list[action].function()
+        input("Press Enter to continue...")
 
 def live_gesture_recognition():
     print("Try Gesture")
@@ -149,7 +151,8 @@ def live_gesture_recognition():
             listener.recording_on()
             while listener.is_recording:
                 pass
-            NeuralNetwork.input_test_emg_network(listener.data_handler)
+            results = NeuralNetwork.input_test_emg_network(listener.data_handler)
+            NeuralNetwork.print_results(results)
 
 
     except KeyboardInterrupt:
@@ -180,7 +183,9 @@ def create_gesture_files():
 
             folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
 
-            recognized_gesture = NeuralNetwork.input_test_emg_network(listener.data_handler)
+            results = NeuralNetwork.input_test_emg_network(listener.data_handler)
+            recognized_gesture = numpy.argmax(results)
+            NeuralNetwork.print_results(results)
 
             # Print number to gesture table
             print()

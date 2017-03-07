@@ -178,8 +178,6 @@ class InputDataHandler(DataHandler):
 
         return o_file
 
-
-
 class FileDataHandler(DataHandler):
     def __init__(self, file_data):
         super().__init__()

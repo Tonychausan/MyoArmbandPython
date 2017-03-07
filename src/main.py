@@ -1,14 +1,15 @@
 from time import sleep
 import myo as libmyo
 from os import walk
+import datetime
 
 import DeviceListener as DeviceListener
 import MenuActions as MenuActions
+import Utility
 import DataHandlers as DataHandlers
 import DataUtility as DataUtility
 
 from DataUtility import Sensor, Gesture, DataSetFormat, DataSetType, File
-
 
 menu_item_list = []
 

@@ -1,6 +1,7 @@
 import json
 import os
 import numpy
+import datetime
 
 import DataUtility
 from DataUtility import DataSetFormat, DataSetType
@@ -112,3 +113,21 @@ def compress_json_file(file, data_set_type):
 
 def NormalizeArray(array):
     return array/numpy.linalg.norm(array)
+
+def date_to_string(day, month, year):
+    if day < 10:
+        day = "0" + str(day)
+    if month < 10:
+        month = "0" + str(month)
+
+    return '{}-{}-{}'.format(year, month, day)
+
+
+def check_int_input(i):
+    try:
+        i = int(i)
+    except ValueError:
+        print("That's not an int!")
+        return False
+
+    return True
