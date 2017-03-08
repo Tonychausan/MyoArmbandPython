@@ -30,9 +30,15 @@ class Gesture:
     SLEEP = 2
     THANKYOU = 3
     WHY = 4
+    NO = 5
+    YES = 6
+    DRINK = 7
+    HELLO = 8
+    SORRY = 9
+
     NONE_GESTURE = NUMBER_OF_GESTURES
 
-    GESTURE_NAMES = [ "EAT", "HELP", "SLEEP", "THANKYOU", "WHY", "NONE_GESTURE" ]
+    GESTURE_NAMES = [ "EAT", "HELP", "SLEEP", "THANKYOU", "WHY", "NO", "YES", "DRINK", "HELLO", "SORRY", "NONE_GESTURE" ]
 
     @staticmethod
     def gesture_to_string(gesture):

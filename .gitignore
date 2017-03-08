@@ -46,8 +46,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-data/compressed_files/
-data/nn_data/
+data/
 myo/
 myo-sdk-win-0.9.0/
 src/__pycache__/

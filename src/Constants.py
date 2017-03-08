@@ -1,5 +1,5 @@
 NUMBER_OF_SENSORS = 4
-NUMBER_OF_GESTURES = 5
+NUMBER_OF_GESTURES = 10
 
 # Sample rate for each sensor
 FREQUENCY_EMG = 200

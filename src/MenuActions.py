@@ -174,7 +174,7 @@ def create_gesture_files():
     try:
         while True:
             print()
-            print("#################################################################################")
+            print("#################################################################################\n",end="")
             input("Press Enter to continue...")
             listener.recording_on()
             sleep(2.0)
