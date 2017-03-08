@@ -237,7 +237,6 @@ def test_emg_network():
 
         summary_list.append((test_file.gesture, recognized_gesture))
 
-
         print()
         print("File:", test_file.filename)
 
