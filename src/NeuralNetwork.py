@@ -15,7 +15,7 @@ size_of_training_set = len(DataUtility.TRAINING_FILE_LIST)
 size_of_test_set = len(DataUtility.TEST_FILE_LIST)
 TRAINING_DATA_FILE_PATH = '../data/nn_data/emg_network/training_file.data'
 
-SESS_PATH = '../data/nn_data/emg_network/sessions/{}/'.format(Utility.date_to_string(8,3,2017) + "-0033")
+SESS_PATH = '../data/nn_data/emg_network/sessions/{}/'.format("2017-03-09-1501")
 SESS_MODEL_PATH =  SESS_PATH + 'emg_model'
 
 # Training Parameters
@@ -28,7 +28,7 @@ N_INPUT_NODES = Constant.NUMBER_OF_EMG_ARRAYS * 2
 N_HIDDEN_NODES = 24
 N_OUTPUT_NODES  = Constant.NUMBER_OF_GESTURES
 
-layer_sizes = [N_INPUT_NODES, 32, 16, N_OUTPUT_NODES] # Network build
+layer_sizes = [N_INPUT_NODES, 8, N_OUTPUT_NODES] # Network build
 
 tf.Session() # remove warnings... hack...
 
@@ -150,6 +150,9 @@ def create_emg_network():
     (training_size, n_inputs, n_outputs) = get_training_meta_data()
 
     input_placeholder = tf.placeholder(tf.float32, shape=[training_size, n_inputs], name="input")
+
+    layer_sizes[0] = n_inputs
+    layer_sizes[-1] = n_outputs
 
     (theta, bias) = create_emg_network_variables(layer_sizes)
     (layers, output) = create_emg_network_layers(input_placeholder, theta, bias)
