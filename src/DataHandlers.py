@@ -1,5 +1,6 @@
 import json
 import numpy
+import pywt
 
 import DataUtility as DataUtility
 import Constants as Constant
@@ -38,7 +39,7 @@ class DataHandler:
         else:
             return []
 
-    def get_emg_sums_normalized(self):
+    def get_emg_sums_normalized2(self):
         emg_sums = []
         emg_sum_min = -1
         emg_sum_max = -1
@@ -57,24 +58,7 @@ class DataHandler:
         emg_sums = Utility.NormalizeArray(emg_sums)
         emg_sums = numpy.append(emg_sums, self.get_waveform_length_of_emg()).flatten()
 
-        #emg_sums = numpy.append(emg_sums, self.get_emg_sum_of_intervals()).flatten()
         return emg_sums
-
-    def get_emg_sum_of_intervals(self):
-        interval_length = Constant.EMG_INTERVAL_LENGTH
-        number_of_intervals = int(numpy.ceil(Constant.DATA_LENGTH_EMG/interval_length))
-
-        emg_interval_sums = [[]] * Constant.NUMBER_OF_EMG_ARRAYS
-
-        for i in range(Constant.NUMBER_OF_EMG_ARRAYS):
-            emg_interval_sums[i] = numpy.array_split(self.emg_data[i][:Constant.DATA_LENGTH_EMG],number_of_intervals)
-
-        for i in range(Constant.NUMBER_OF_EMG_ARRAYS):
-            for j in range(number_of_intervals):
-                emg_interval_sums[i][j] = numpy.sum(numpy.square(emg_interval_sums[i][j]))
-
-
-        return  Utility.NormalizeArray([item for sublist in emg_interval_sums for item in sublist])
 
     def get_waveform_length_of_emg(self):
         emg_waveform_length_list = []
@@ -87,6 +71,43 @@ class DataHandler:
 
         emg_waveform_length_list = Utility.NormalizeArray(emg_waveform_length_list)
         return emg_waveform_length_list
+
+
+    # http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7150944&tag=1
+    def wavelet_feature_extraxtion(self):
+        emg_feature_data = []
+
+        n = Constant.EMG_WAVELET_LEVEL
+        for emg_array in self.emg_data:
+            emg_array = Utility.NormalizeArray(emg_array[:Constant.DATA_LENGTH_EMG])
+
+            coeffs = pywt.wavedec(emg_array, 'db1', level=n)
+            cAn = coeffs[0]
+            cD = coeffs[1:]
+
+            reconstructed_signal = []
+            for i in range(n+1):
+                temp_coeffs = [None] * (n+1-i) # placement of [cAn, cDn, cD(n-1)..., cD1]
+                if i == 0:
+                    temp_coeffs[i] = cAn
+                else:
+                    temp_coeffs.append(None)
+                    temp_coeffs[1] = cD[i-1]
+
+                reconstructed_signal.append(pywt.waverec(temp_coeffs, 'db1'))
+
+            An = reconstructed_signal[0]
+            D = reconstructed_signal[1:]
+
+            for signals in coeffs:
+                emg_feature_data.append(Utility.mean_absolute_value(signals))
+                emg_feature_data.append(Utility.root_mean_square(signals))
+                emg_feature_data.append(Utility.waveform_length(signals))
+
+        return emg_feature_data
+
+    def get_emg_data_features(self):
+        return self.wavelet_feature_extraxtion()
 
 class InputDataHandler(DataHandler):
     def __init__(self):

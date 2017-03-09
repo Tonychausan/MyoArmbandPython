@@ -33,6 +33,9 @@ layer_sizes = [N_INPUT_NODES, 32, 16, N_OUTPUT_NODES] # Network build
 tf.Session() # remove warnings... hack...
 
 def create_emg_training_file():
+    data_handler = DataHandlers.FileDataHandler(DataUtility.TEST_FILE_LIST[0])
+    N_INPUT_NODES = len(data_handler.get_emg_data_features())
+
     print("Creating EMG-training file")
     print("training size:", size_of_test_set)
     print("Number of input neurons:", N_INPUT_NODES)
@@ -48,7 +51,7 @@ def create_emg_training_file():
             print(data_file.filename)
             data_handler = DataHandlers.FileDataHandler(data_file)
 
-            emg_sums = data_handler.get_emg_sums_normalized()
+            emg_sums = data_handler.get_emg_data_features()
             for i in range(N_INPUT_NODES):
                 outfile.write(str(emg_sums[i]))
                 if i < N_INPUT_NODES - 1:
@@ -263,7 +266,7 @@ def test_emg_network():
         print('{:15s}\t{:4d} of {:4d}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0]))
 
 def input_test_emg_network(input_data_handler):
-    test_inputs = [input_data_handler.get_emg_sums_normalized()]
+    test_inputs = [input_data_handler.get_emg_data_features()]
 
     input_placeholder = tf.placeholder(tf.float32, shape=[1, N_INPUT_NODES], name="input")
     sess_layer_sizes = get_network_meta_data_from_file()

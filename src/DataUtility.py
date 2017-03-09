@@ -2,8 +2,6 @@ import os
 
 import Constants as Constant
 
-
-
 class Sensor:
     NUMBER_OF_SENSORS = Constant.NUMBER_OF_SENSORS
 

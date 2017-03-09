@@ -131,3 +131,19 @@ def check_int_input(i):
         return False
 
     return True
+
+def mean_absolute_value(values):
+    absolute_values = numpy.absolute(values)
+    return numpy.mean(absolute_values)
+
+def root_mean_square(values):
+    square_value = numpy.square(values)
+    N = square_value.size
+    sum_value = numpy.sum(square_value)
+    return numpy.sqrt((1/N)*sum_value)
+
+def waveform_length(values):
+    diff_values = numpy.subtract(values[:len(values)-1], values[1:])
+    absolute__diff_values = numpy.absolute(diff_values)
+    sum_absolute_diff_values = numpy.sum(absolute__diff_values)
+    return sum_absolute_diff_values
