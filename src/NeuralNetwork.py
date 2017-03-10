@@ -15,7 +15,7 @@ size_of_training_set = len(DataUtility.TRAINING_FILE_LIST)
 size_of_test_set = len(DataUtility.TEST_FILE_LIST)
 TRAINING_DATA_FILE_PATH = '../data/nn_data/emg_network/training_file.data'
 
-SESS_PATH = '../data/nn_data/emg_network/sessions/{}/'.format("2017-03-09-1501")
+SESS_PATH = '../data/nn_data/emg_network/sessions/{}/'.format("2017-03-10-0233")
 SESS_MODEL_PATH =  SESS_PATH + 'emg_model'
 
 # Training Parameters
@@ -28,7 +28,7 @@ N_INPUT_NODES = Constant.NUMBER_OF_EMG_ARRAYS * 2
 N_HIDDEN_NODES = 24
 N_OUTPUT_NODES  = Constant.NUMBER_OF_GESTURES
 
-layer_sizes = [N_INPUT_NODES, 8, N_OUTPUT_NODES] # Network build
+layer_sizes = [N_INPUT_NODES, 100, 50, N_OUTPUT_NODES] # Network build
 
 tf.Session() # remove warnings... hack...
 
@@ -211,11 +211,37 @@ def continue_emg_network_training():
             dummy = Utility.check_int_input(n_steps)
         n_steps = int(n_steps)
 
+        dummy = False
+        while not dummy:
+            run_time = input("Max Time (hours): ")
+            dummy = Utility.check_int_input(run_time)
+        run_time = float(run_time) * 3600
+
         start_time = time.time()
-        for i in range(n_steps):
+        current_time = time.time() - start_time
+        i = 0
+        #for i in range(n_steps):
+        while current_time < run_time and i < n_steps:
             sess.run(train_step, feed_dict={input_placeholder: inputs, output_placeholder: outputs})
             if i % N_EPOCH == 0:
-                print('Batch:', i, end="\r")
+                os.system('cls')
+                print("Train Network")
+                print("Training file:", TRAINING_DATA_FILE_PATH)
+                print("Training session:", SESS_PATH)
+                print("Number of steps:", n_steps)
+                print("Max Time (hours):", run_time/3600)
+
+                print('Batch:', i)
+                if i != 0:
+                    current_time = time.time() - start_time
+                    (hours, minutes, seconds) = Utility.second_to_HMS(current_time)
+                    print('Current time: {:.0f}h {:.0f}min {:.0f}sec'.format(hours, minutes, seconds))
+
+                    estimated_time = (current_time/i) * (n_steps)
+                    (hours, minutes, seconds) = Utility.second_to_HMS(estimated_time)
+                    print('Estimated time: {:.0f}h {:.0f}min {:.0f}sec'.format(hours, minutes, seconds))
+
+            i += 1
 
         print()
         print("Runtime:", '{0:.2f}'.format(float(time.time() - start_time))+"sec")
@@ -271,8 +297,9 @@ def test_emg_network():
 def input_test_emg_network(input_data_handler):
     test_inputs = [input_data_handler.get_emg_data_features()]
 
-    input_placeholder = tf.placeholder(tf.float32, shape=[1, N_INPUT_NODES], name="input")
     sess_layer_sizes = get_network_meta_data_from_file()
+    input_placeholder = tf.placeholder(tf.float32, shape=[1, sess_layer_sizes[0]], name="input")
+
 
     (theta, bias) = create_emg_network_variables(sess_layer_sizes)
 

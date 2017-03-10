@@ -132,6 +132,15 @@ def check_int_input(i):
 
     return True
 
+def second_to_HMS(current_time):
+    hours = current_time // 3600
+    current_time %= 3600
+    minutes = current_time // 60
+    current_time %= 60
+    seconds = current_time
+
+    return (hours, minutes, seconds)
+
 def mean_absolute_value(values):
     absolute_values = numpy.absolute(values)
     return numpy.mean(absolute_values)
