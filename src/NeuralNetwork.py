@@ -15,7 +15,7 @@ size_of_training_set = len(DataUtility.TRAINING_FILE_LIST)
 size_of_test_set = len(DataUtility.TEST_FILE_LIST)
 TRAINING_DATA_FILE_PATH = '../data/nn_data/emg_network/training_file.data'
 
-SESS_PATH = '../data/nn_data/emg_network/sessions/{}/'.format("2017-03-10-0233")
+SESS_PATH = '../data/nn_data/emg_network/sessions/{}/'.format("2017-03-13-0138")
 SESS_MODEL_PATH =  SESS_PATH + 'emg_model'
 
 # Training Parameters
@@ -28,7 +28,7 @@ N_INPUT_NODES = Constant.NUMBER_OF_EMG_ARRAYS * 2
 N_HIDDEN_NODES = 24
 N_OUTPUT_NODES  = Constant.NUMBER_OF_GESTURES
 
-layer_sizes = [N_INPUT_NODES, 100, 50, N_OUTPUT_NODES] # Network build
+layer_sizes = [N_INPUT_NODES, 3*8, 8, N_OUTPUT_NODES] # Network build
 
 tf.Session() # remove warnings... hack...
 
