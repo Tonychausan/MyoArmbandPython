@@ -5,7 +5,7 @@ import Constants as Constant
 import Utility
 import DataHandlers
 import DataUtility
-from DataUtility import Sensor, Gesture, DataSetType
+from DataUtility import Sensor, Gesture
 from Settings import is_sensor_on
 
 
@@ -23,7 +23,7 @@ def cross_correlation(max_delay, x, y):
     sx = numpy.sum(temp_sx)
     sy = numpy.sum(temp_sy)
 
-    denom = numpy.sqrt(sx*sy)
+    denom = numpy.sqrt(sx * sy)
     r = 0.0
     for delay in range(round(-max_delay + 1), round(max_delay)):
         sxy = 0
@@ -34,8 +34,8 @@ def cross_correlation(max_delay, x, y):
             else:
                 sxy += (x[i] - mx) * (y[j] - my)
 
-        if r < (sxy/denom):
-            r = sxy/denom
+        if r < (sxy / denom):
+            r = sxy / denom
 
     return r
 

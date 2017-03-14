@@ -5,7 +5,7 @@ import pywt
 import DataUtility as DataUtility
 import Constants as Constant
 import Utility as Utility
-from DataUtility import Sensor, Gesture, DataSetFormat, DataSetType
+from DataUtility import Sensor, DataSetFormat, DataSetType
 
 
 class DataHandler:
@@ -64,14 +64,12 @@ class DataHandler:
         emg_waveform_length_list = []
 
         for emg_array in self.emg_data:
-            emg_waveform = numpy.subtract(emg_array[:Constant.DATA_LENGTH_EMG-1], emg_array[1:Constant.DATA_LENGTH_EMG])
+            emg_waveform = numpy.subtract(emg_array[:Constant.DATA_LENGTH_EMG - 1], emg_array[1:Constant.DATA_LENGTH_EMG])
             emg_waveform = numpy.sum(numpy.absolute(emg_waveform))
             emg_waveform_length_list.append(emg_waveform)
 
-
         emg_waveform_length_list = Utility.NormalizeArray(emg_waveform_length_list)
         return emg_waveform_length_list
-
 
     # http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7150944&tag=1
     def wavelet_feature_extraxtion(self):
@@ -86,13 +84,13 @@ class DataHandler:
             cD = coeffs[1:]
 
             reconstructed_signal = []
-            for i in range(n+1):
-                temp_coeffs = [None] * (n+1-i) # placement of [cAn, cDn, cD(n-1)..., cD1]
+            for i in range(n + 1):
+                temp_coeffs = [None] * (n + 1 - i)  # placement of [cAn, cDn, cD(n-1)..., cD1]
                 if i == 0:
                     temp_coeffs[i] = cAn
                 else:
                     temp_coeffs.append(None)
-                    temp_coeffs[1] = cD[i-1]
+                    temp_coeffs[1] = cD[i - 1]
 
                 reconstructed_signal.append(pywt.waverec(temp_coeffs, 'db1'))
 
@@ -108,6 +106,7 @@ class DataHandler:
 
     def get_emg_data_features(self):
         return self.wavelet_feature_extraxtion()
+
 
 class InputDataHandler(DataHandler):
     def __init__(self):
@@ -199,6 +198,7 @@ class InputDataHandler(DataHandler):
 
         return o_file
 
+
 class FileDataHandler(DataHandler):
     def __init__(self, file_data):
         super().__init__()
@@ -210,7 +210,6 @@ class FileDataHandler(DataHandler):
         json_data_table_name = Constant.JSON_ARRAY_DATA_TABLE_NAME
 
         data_array = json_data[json_array_name][json_data_table_name]
-
 
         self.set_sensor_data(data_array, sensor)
 
