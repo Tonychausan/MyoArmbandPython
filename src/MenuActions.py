@@ -14,10 +14,47 @@ import CompareMethods
 import NeuralNetwork
 import DeviceListener
 
+
 class MenuItem:
     def __init__(self, menu_text, function):
         self.menu_text = menu_text
         self.function = function
+
+
+class MenuList:
+    def __init__(self, menu_name):
+        self.menu_name = menu_name
+        self.menu_item_list = []
+        self.size = 0
+        self.action = -1
+
+    def append_menu_item(self, menu_item):
+        self.menu_item_list.append(menu_item)
+        self.size += 1
+
+    def print_menu(self):
+        os.system('cls')
+        print(self.menu_name)
+        print("###################################################")
+
+        for i in range(self.size):
+            print("{})".format(i), self.menu_item_list[i].menu_text)
+        print()
+
+    def select_action(self):
+        action = -1
+        while action < -1:
+            action = input("Select an action: ")
+            try:
+                action = int(action)
+            except ValueError:
+                print("That's not an int!")
+                action = -1
+                continue
+
+            if action >= self.size:
+                print("Unknown action!")
+        self.action = action
 
 
 def create_main_menu():
@@ -31,6 +68,7 @@ def create_main_menu():
     menu_item_list.append(MenuItem("Neural Network Menu", neural_network_testing))
     return menu_item_list
 
+
 def print_menu(menu_item_list):
     os.system('cls')
     print("Main Menu")
@@ -39,16 +77,17 @@ def print_menu(menu_item_list):
         print(str(i) + ")", menu_item_list[i].menu_text)
     print()
 
-    action = check_int_input_value(min=0, max=len(menu_item_list))
+    action = is_valid_menu_item(min=0, max=len(menu_item_list))
     os.system('cls')
     return action
 
-def check_int_input_value(min, max, empty_input_allowed=False):
+
+def is_valid_menu_item(min, max, empty_input_allowed=False):
     action = min - 1
     while action < min:
-        action = input( "Choose an action: " )
+        action = input("Choose an action: ")
         if empty_input_allowed and action == "":
-            return min-1
+            return min - 1
         try:
             action = int(action)
         except ValueError:
@@ -57,13 +96,14 @@ def check_int_input_value(min, max, empty_input_allowed=False):
             continue
 
         if action >= max:
-            print ("That's a high int!")
-            action = min-1
+            print("That's a high int!")
+            action = min - 1
         elif action < 0:
-            print ("That's a low int!")
-            action = min-1
+            print("That's a low int!")
+            action = min - 1
 
         return action
+
 
 def print_myo_data():
     libmyo.init('../myo-sdk-win-0.9.0/bin')
@@ -96,6 +136,7 @@ def compress_json_files():
 
     print("Finshed compressing!")
 
+
 def compare_prerecorded_files():
     print("Compare pre-recorded tests")
     for file in DataUtility.TEST_FILE_LIST:
@@ -124,9 +165,10 @@ def remove_all_compressed_files():
 
 def neural_network_testing():
     nn_menu_list = []
+    nn_menu_list.append(MenuItem("Select a session", NeuralNetwork.select_sess_path))
     nn_menu_list.append(MenuItem("Create training file", NeuralNetwork.create_emg_training_file))
     nn_menu_list.append(MenuItem("Create network", NeuralNetwork.create_emg_network))
-    nn_menu_list.append(MenuItem("Train network", NeuralNetwork.continue_emg_network_training))
+    nn_menu_list.append(MenuItem("Train network", NeuralNetwork.train_emg_network))
     nn_menu_list.append(MenuItem("Test data", NeuralNetwork.test_emg_network))
 
     while True:
@@ -136,6 +178,7 @@ def neural_network_testing():
         action = print_menu(nn_menu_list)
         nn_menu_list[action].function()
         input("Press Enter to continue...")
+
 
 def live_gesture_recognition():
     print("Try Gesture")
@@ -154,12 +197,11 @@ def live_gesture_recognition():
             results = NeuralNetwork.input_test_emg_network(listener.data_handler)
             NeuralNetwork.print_results(results)
 
-
     except KeyboardInterrupt:
         print('\nQuit')
 
-
     hub.shutdown()  # !! crucial
+
 
 def create_gesture_files():
     libmyo.init('../myo-sdk-win-0.9.0/bin')
@@ -170,11 +212,11 @@ def create_gesture_files():
 
     print("Create record data set")
 
-    last_file = None;
+    last_file = None
     try:
         while True:
             print()
-            print("#################################################################################\n",end="")
+            print("#################################################################################\n", end="")
             input("Press Enter to continue...")
             listener.recording_on()
             sleep(2.0)
@@ -195,12 +237,16 @@ def create_gesture_files():
             print(Gesture.NUMBER_OF_GESTURES, "->", "remove last file...")
             print(Gesture.NUMBER_OF_GESTURES + 1, "->", "continue...")
 
-            gesture_recorded = check_int_input_value(min=0, max=Gesture.NUMBER_OF_GESTURES + 2,  empty_input_allowed=True)
-            if gesture_recorded == -1:
-                gesture_recorded = recognized_gesture
+            gesture_recorded = -1
+            while gesture_recorded < 0 or gesture_recorded >= Gesture.NUMBER_OF_GESTURES + 2:
+                gesture_recorded = input("Select an action: ")
+                if gesture_recorded == "":
+                    gesture_recorded = recognized_gesture
+                elif not Utility.is_int_input(gesture_recorded):
+                    gesture_recorded = -1
 
             if(gesture_recorded == Gesture.NUMBER_OF_GESTURES):
-                if(last_file != None):
+                if last_file is not None:
                     os.remove(last_file.get_file_path())
                     print("Removed file:", last_file.filename)
                     last_file = None
@@ -216,9 +262,26 @@ def create_gesture_files():
 
             last_file = listener.data_handler.create_json_file(filename)
 
-
     except KeyboardInterrupt:
         print('\nQuit')
 
-
     hub.shutdown()  # !! crucial
+
+
+main_menu_list = [
+    MenuItem("Try gestures", live_gesture_recognition),
+    MenuItem("Measurment display", print_myo_data),
+    MenuItem("Compress Files", compress_json_files),
+    MenuItem("Delete all compressed files", remove_all_compressed_files),
+    MenuItem("Pre-data gesture test", compare_prerecorded_files),
+    MenuItem("Create Gesture-files", create_gesture_files),
+    MenuItem("Neural Network Menu", neural_network_testing)
+]
+
+nn_menu_list = [
+    MenuItem("Select a session", NeuralNetwork.select_sess_path),
+    MenuItem("Create training file", NeuralNetwork.create_emg_training_file),
+    MenuItem("Create network", NeuralNetwork.create_emg_network),
+    MenuItem("Train network", NeuralNetwork.train_emg_network),
+    MenuItem("Test data", NeuralNetwork.test_emg_network)
+]

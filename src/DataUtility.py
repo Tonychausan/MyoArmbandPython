@@ -86,7 +86,7 @@ class File:
 #   returns : the path to the data set
 #
 def get_data_set_path(data_format, data_type):
-    path = "../" + Constant.DATA_SET_FOLDER
+    path = Constant.DATA_SET_FOLDER
 
     format_folder = Constant.COMPRESSED_DATA_FOLDER
     if (data_format == DataSetFormat.RAW):
@@ -139,3 +139,6 @@ TRAINING_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESS
 TEST_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.RECORDED))
 TRAINING_FILE_LIST.extend(generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.RECORDED)))
 # TRAINING_FILE_LIST.extend(TEST_FILE_LIST)
+
+SIZE_OF_TRAINING_FILE_LIST = len(TRAINING_FILE_LIST)
+SIZE_OF_TEST_FILE_LIST = len(TEST_FILE_LIST)

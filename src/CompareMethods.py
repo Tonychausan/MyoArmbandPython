@@ -44,11 +44,12 @@ def cross_correlation_compare_sensor_data(input_data, check_data, sensor):
     number_of_arrays = Utility.get_number_of_arrays_for_sensor(sensor)
     data_length = Utility.get_length_of_arrays_for_sensor(sensor)
 
-    r = 0.0;
+    r = 0.0
     for i in range(number_of_arrays):
-        r += cross_correlation(data_length/2, input_data[i], check_data[i])
+        r += cross_correlation(data_length / 2, input_data[i], check_data[i])
 
     return r / number_of_arrays
+
 
 def cross_correlation_comparison(gesture_input_data_handler):
     print("Sensor Ignored: ", end="")
@@ -65,7 +66,7 @@ def cross_correlation_comparison(gesture_input_data_handler):
     for i in range(len(DataUtility.TRAINING_FILE_LIST)):
         training_data_file = DataUtility.TRAINING_FILE_LIST[i]
         print(training_data_file.filename, end="\r")
-        sys.stdout.write("\033[K") # clean line
+        sys.stdout.write("\033[K")  # clean line
 
         current_training_gesture = training_data_file.gesture
 

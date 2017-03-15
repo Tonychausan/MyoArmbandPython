@@ -7,6 +7,7 @@ import DataUtility
 from DataUtility import DataSetFormat, DataSetType
 import Constants as Constant
 
+
 def get_number_of_arrays_for_sensor(sensor):
     if sensor == DataUtility.Sensor.EMG:
         return Constant.NUMBER_OF_EMG_ARRAYS
@@ -18,6 +19,7 @@ def get_number_of_arrays_for_sensor(sensor):
         return Constant.NUMBER_OF_ORI_ARRAYS
     else:
         return None
+
 
 def get_frequency_of_sensor(sensor):
     if sensor == DataUtility.Sensor.EMG:
@@ -31,6 +33,7 @@ def get_frequency_of_sensor(sensor):
     else:
         return None
 
+
 def get_length_of_arrays_for_sensor(sensor):
     if sensor == DataUtility.Sensor.EMG:
         return Constant.DATA_LENGTH_EMG
@@ -43,6 +46,7 @@ def get_length_of_arrays_for_sensor(sensor):
     else:
         return None
 
+
 def get_json_array_name_for_sensor(sensor):
     if sensor == DataUtility.Sensor.EMG:
         return Constant.JSON_EMG_ARRAY_NAME
@@ -54,6 +58,7 @@ def get_json_array_name_for_sensor(sensor):
         return Constant.JSON_ORI_ARRAY_NAME
     else:
         return None
+
 
 # Function: get_json_data_from_file
 # ----------------------------
@@ -69,6 +74,7 @@ def get_json_data_from_file(file):
 
     return json_data
 
+
 # Function: is_file_already_compressed
 # ----------------------------
 #   Check if file already are compressed
@@ -81,6 +87,7 @@ def get_json_data_from_file(file):
 def is_file_already_compressed(file, data_set_type):
     compressed_file_path = DataUtility.get_data_set_path(DataSetFormat.COMPRESSED, data_set_type) + file.filename
     return os.path.exists(compressed_file_path)
+
 
 # Function: compress_json_file
 # ----------------------------
@@ -98,7 +105,7 @@ def compress_json_file(file, data_set_type):
     json_array_name_list = [Constant.JSON_EMG_ARRAY_NAME, Constant.JSON_ACC_ARRAY_NAME, Constant.JSON_GYR_ARRAY_NAME, Constant.JSON_ORI_ARRAY_NAME]
     data_length_list = [Constant.DATA_LENGTH_EMG, Constant.DATA_LENGTH_ACC, Constant.DATA_LENGTH_GYR, Constant.DATA_LENGTH_ORI]
 
-    for json_array_name , data_length in zip(json_array_name_list, data_length_list):
+    for json_array_name, data_length in zip(json_array_name_list, data_length_list):
         compressed_data[json_array_name] = {}
         if file.is_recorded:
             transposed_raw_data = numpy.transpose(raw_data[json_array_name][Constant.JSON_ARRAY_DATA_TABLE_NAME][:data_length]).tolist()
@@ -112,7 +119,8 @@ def compress_json_file(file, data_set_type):
 
 
 def NormalizeArray(array):
-    return array/numpy.linalg.norm(array)
+    return array / numpy.linalg.norm(array)
+
 
 def date_to_string(day, month, year):
     if day < 10:
@@ -123,7 +131,7 @@ def date_to_string(day, month, year):
     return '{}-{}-{}'.format(year, month, day)
 
 
-def check_int_input(i):
+def is_int_input(i):
     try:
         i = int(i)
     except ValueError:
@@ -131,6 +139,16 @@ def check_int_input(i):
         return False
 
     return True
+
+def is_float_input(i):
+    try:
+        i = float(i)
+    except ValueError:
+        print("That's not a float!")
+        return False
+
+    return True
+
 
 def second_to_HMS(current_time):
     hours = current_time // 3600
@@ -141,18 +159,21 @@ def second_to_HMS(current_time):
 
     return (hours, minutes, seconds)
 
+
 def mean_absolute_value(values):
     absolute_values = numpy.absolute(values)
     return numpy.mean(absolute_values)
+
 
 def root_mean_square(values):
     square_value = numpy.square(values)
     N = square_value.size
     sum_value = numpy.sum(square_value)
-    return numpy.sqrt((1/N)*sum_value)
+    return numpy.sqrt((1 / N) * sum_value)
+
 
 def waveform_length(values):
-    diff_values = numpy.subtract(values[:len(values)-1], values[1:])
+    diff_values = numpy.subtract(values[:len(values) - 1], values[1:])
     absolute__diff_values = numpy.absolute(diff_values)
     sum_absolute_diff_values = numpy.sum(absolute__diff_values)
     return sum_absolute_diff_values

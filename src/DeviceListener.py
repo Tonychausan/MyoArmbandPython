@@ -10,12 +10,14 @@ from DataUtility import Sensor, Gesture, DataSetFormat, DataSetType, File
 
 start_time = 0.0
 
+
 class LiveMessureListener(libmyo.DeviceListener):
     def __init__(self):
         self.emg = None
         self.acc = None
         self.gyr = None
         self.ori = None
+
     def on_pair(self, myo, timestamp, firmware_version):
         print("Hello, Myo!")
         myo.set_stream_emg(libmyo.StreamEmg.enabled)
@@ -24,11 +26,11 @@ class LiveMessureListener(libmyo.DeviceListener):
         print("Goodbye, Myo!")
 
     def on_arm_sync(self, myo, *args):
-        #myo.set_stream_emg(libmyo.StreamEmg.enabled)
+        # myo.set_stream_emg(libmyo.StreamEmg.enabled)
         pass
 
     def on_orientation_data(self, myo, timestamp, quat):
-        #print("Orientation:", quat.x, quat.y, quat.z, quat.w)
+        # print("Orientation:", quat.x, quat.y, quat.z, quat.w)
         self.ori = quat
         pass
 
@@ -81,7 +83,6 @@ class LiveGestureListener(libmyo.DeviceListener):
         for sensor in range(Sensor.NUMBER_OF_SENSORS):
             self.sensor_array_length_list[sensor] += time_margin * Utility.get_frequency_of_sensor(sensor)
 
-
     def on_pair(self, myo, timestamp, firmware_version):
         print("Hello, Myo!")
         myo.set_stream_emg(libmyo.StreamEmg.enabled)
@@ -90,11 +91,11 @@ class LiveGestureListener(libmyo.DeviceListener):
         print("Goodbye, Myo!")
 
     def on_arm_sync(self, myo, *args):
-        #myo.set_stream_emg(libmyo.StreamEmg.enabled)
+        # myo.set_stream_emg(libmyo.StreamEmg.enabled)
         pass
 
     def on_orientation_data(self, myo, timestamp, quat):
-        #print("Orientation:", quat.x, quat.y, quat.z, quat.w)
+        # print("Orientation:", quat.x, quat.y, quat.z, quat.w)
         sensor = Sensor.ORI
         if self.is_sensor_recording[sensor]:
             self.data_handler.append_data(sensor, quat)
