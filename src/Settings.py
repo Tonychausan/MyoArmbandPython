@@ -1,5 +1,12 @@
 from DataUtility import Sensor
 
+# Wavelet features
+is_emg_feature_mav_on = True
+is_emg_feature_rms_on = True
+is_emg_feature_wl_on = True
+
+
+
 # List of sensors to ignor in the gesture prediction
 is_EMG_sensor_on = True
 is_ACC_sensor_on = True

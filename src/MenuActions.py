@@ -13,6 +13,7 @@ import DataHandlers
 import CompareMethods
 import NeuralNetwork
 import DeviceListener
+import HackathonDataNeuralNetwork
 
 
 class MenuItem:
@@ -164,13 +165,22 @@ def remove_all_compressed_files():
 
 
 def neural_network_testing():
-    nn_menu_list = []
-    nn_menu_list.append(MenuItem("Select a session", NeuralNetwork.select_sess_path))
-    nn_menu_list.append(MenuItem("Create training file", NeuralNetwork.create_emg_training_file))
-    nn_menu_list.append(MenuItem("Create network", NeuralNetwork.create_emg_network))
-    nn_menu_list.append(MenuItem("Train network", NeuralNetwork.train_emg_network))
-    nn_menu_list.append(MenuItem("Test data", NeuralNetwork.test_emg_network))
+    use_hackathon_samples = input("Use hackathon samples (1) or press enter: ")
 
+    if use_hackathon_samples:
+        NetworkFunction = HackathonDataNeuralNetwork
+    else:
+        NetworkFunction = NeuralNetwork
+
+    nn_menu_list = []
+    nn_menu_list.append(MenuItem("Select a session", NetworkFunction.select_sess_path))
+    nn_menu_list.append(MenuItem("Create training file", NetworkFunction.create_emg_training_file))
+    nn_menu_list.append(MenuItem("Create network", NetworkFunction.create_emg_network))
+    nn_menu_list.append(MenuItem("Train network", NetworkFunction.train_emg_network))
+    nn_menu_list.append(MenuItem("Test data", NetworkFunction.test_emg_network))
+
+    NetworkFunction.set_default_sess_path()
+    
     while True:
         os.system('cls')
         print("Neural Network menu")
