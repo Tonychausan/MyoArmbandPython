@@ -16,10 +16,9 @@ import NeuralNetworkUtility
 NEURAL_NETWORK_DATA_PATH = Constant.DATA_SET_FOLDER + "nn_data/"
 SESSIONS_FOLDER_NAME = "sessions/"
 LOG_FOLDER_NAME = "log/"
-
 EMG_NEURAL_NETWORK_DATA_PATH = NEURAL_NETWORK_DATA_PATH + "emg_network/"
-EMG_NEURAL_NETWORK_SESSIONS_FOLDER = EMG_NEURAL_NETWORK_DATA_PATH + SESSIONS_FOLDER_NAME
 
+EMG_NEURAL_NETWORK_SESSIONS_FOLDER = EMG_NEURAL_NETWORK_DATA_PATH + SESSIONS_FOLDER_NAME
 TRAINING_DATA_FILE_PATH = EMG_NEURAL_NETWORK_DATA_PATH + "training_file.data"
 
 SESS_PATH = None
@@ -112,7 +111,7 @@ def test_emg_network():
     print("#############################################################")
     print("Success Rate")
     for i in range(Gesture.NUMBER_OF_GESTURES):
-        print('{:15s}\t{:4d} of {:4d}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0]))
+        print('{:15s}\t{:4d} of {:4d} -> {:.2f}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0], 100 * success_list[i][1] / success_list[i][0]))
 
 
 def print_results(results):

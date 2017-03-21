@@ -15,7 +15,6 @@ SESSION_FOLDERS = '../HackathonDataSamples/NeuralNetwork/Sessions/'
 TRAINING_DATA_FILE_PATH = '../HackathonDataSamples/NeuralNetwork/training_file.data'
 
 SESS_PATH = SESSION_FOLDERS + '{}/'.format("2017-03-18-1617")
-SESS_MODEL_PATH = SESS_PATH + 'emg_model'
 
 layer_sizes = [0, 150, 150, 0]  # Network build
 
