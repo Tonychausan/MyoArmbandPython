@@ -17,7 +17,7 @@ TRAINING_DATA_FILE_PATH = '../HackathonDataSamples/NeuralNetwork/training_file.d
 SESS_PATH = SESSION_FOLDERS + '{}/'.format("2017-03-18-1617")
 SESS_MODEL_PATH = SESS_PATH + 'emg_model'
 
-layer_sizes = [0, 150, 8 * 3, 0]  # Network build
+layer_sizes = [0, 150, 150, 0]  # Network build
 
 
 class File:
@@ -79,7 +79,7 @@ def create_emg_training_file():
         if file.example_id <= 1500 and file.gesture < NUMBER_OF_GESTURES:
             file_list.append(file)
 
-    data_handler = HackathonSamplesDataHandler()
+    data_handler = HackathonSamplesDataHandler(file)
     n_input_nodes = len(data_handler.get_emg_data_features())
     NeuralNetworkUtility.create_emg_training_file(n_input_nodes, TRAINING_DATA_FILE_PATH, file_list, NUMBER_OF_GESTURES, HackathonSamplesDataHandler)
 
