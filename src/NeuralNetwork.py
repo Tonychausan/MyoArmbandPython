@@ -11,6 +11,7 @@ import DataHandlers as DataHandlers
 import Utility
 
 import NeuralNetworkUtility
+from NeuralNetworkUtility import ActivationFunction
 
 # Constants
 NEURAL_NETWORK_DATA_PATH = Constant.DATA_SET_FOLDER + "nn_data/"
@@ -26,6 +27,7 @@ SESS_PATH = None
 n_output_nodes = Constant.NUMBER_OF_GESTURES
 
 layer_sizes = [0, 3 * 8, 8, n_output_nodes]  # Network build
+layer_activation_functions = [ActivationFunction.SIGMOID, ActivationFunction.SIGMOID, ActivationFunction.SIGMOID]
 
 tf.Session()  # remove warnings... hack...
 
@@ -63,7 +65,8 @@ def create_emg_training_file():
 
 
 def create_emg_network():
-    NeuralNetworkUtility.create_emg_network(EMG_NEURAL_NETWORK_SESSIONS_FOLDER, layer_sizes, TRAINING_DATA_FILE_PATH)
+    global SESS_PATH
+    SESS_PATH = NeuralNetworkUtility.create_emg_network(EMG_NEURAL_NETWORK_SESSIONS_FOLDER, layer_sizes, layer_activation_functions, TRAINING_DATA_FILE_PATH)
 
 
 def train_emg_network():

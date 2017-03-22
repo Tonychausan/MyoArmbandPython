@@ -71,9 +71,6 @@ def create_main_menu():
 
 
 def print_menu(menu_item_list):
-    os.system('cls')
-    print("Main Menu")
-    print("###################################################")
     for i in range(len(menu_item_list)):
         print(str(i) + ")", menu_item_list[i].menu_text)
     print()
@@ -167,7 +164,7 @@ def remove_all_compressed_files():
 def neural_network_testing():
     use_hackathon_samples = input("Use hackathon samples (1) or press enter: ")
 
-    if use_hackathon_samples:
+    if use_hackathon_samples == '1':
         NetworkFunction = HackathonDataNeuralNetwork
     else:
         NetworkFunction = NeuralNetwork
@@ -184,6 +181,7 @@ def neural_network_testing():
     while True:
         os.system('cls')
         print("Neural Network menu")
+        print("current session path:", NetworkFunction.SESS_PATH)
         print("####################################################")
         action = print_menu(nn_menu_list)
         nn_menu_list[action].function()

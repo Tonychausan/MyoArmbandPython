@@ -8,9 +8,10 @@ import Utility as Utility
 from DataUtility import Sensor, DataSetFormat, DataSetType
 
 EMG_WAVELET_LEVEL = 1
-NUMBER_OF_FEATURES = 3
+NUMBER_OF_FEATURES = 2
 
-feature_functions = [Utility.mean_absolute_value, Utility.root_mean_square, Utility.waveform_length]
+# feature_functions = [Utility.mean_absolute_value, Utility.root_mean_square, Utility.waveform_length]
+feature_functions = [Utility.mean_absolute_value, Utility.root_mean_square]
 
 
 class DataHandler:
@@ -44,7 +45,7 @@ class DataHandler:
         else:
             return []
 
-    def get_emg_sums_normalized2(self):
+    def get_emg_sums_normalized(self):
         emg_sums = []
         emg_sum_min = -1
         emg_sum_max = -1
@@ -61,7 +62,7 @@ class DataHandler:
                 emg_sum_max = emg_sum
 
         emg_sums = Utility.NormalizeArray(emg_sums)
-        emg_sums = numpy.append(emg_sums, self.get_waveform_length_of_emg()).flatten()
+        # emg_sums = numpy.append(emg_sums, self.get_waveform_length_of_emg()).flatten()
 
         return emg_sums
 
@@ -147,7 +148,9 @@ class DataHandler:
         return emg_feature_data
 
     def get_emg_data_features(self):
-        emg_data_features = numpy.append(self.wavelet_feature_extraxtion(), self.raw_emg_feature_extraxtion())
+        # emg_data_features = numpy.append(self.wavelet_feature_extraxtion(), self.raw_emg_feature_extraxtion())
+        # return emg_data_features
+        emg_data_features = numpy.append([], self.raw_emg_feature_extraxtion())
         return emg_data_features
 
 

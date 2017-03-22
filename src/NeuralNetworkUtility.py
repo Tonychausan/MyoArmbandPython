@@ -11,6 +11,12 @@ N_EPOCH = 5000
 learning_rate = 0.05
 
 
+class ActivationFunction:
+    SIGMOID = "Sigmoid"
+    RELU = "ReLu"
+    SOFTMAX = "Softmax"
+
+
 def get_model_session_path(sess_path):
     return sess_path + 'emg_model'
 
@@ -59,7 +65,7 @@ def create_emg_training_file(n_input_nodes, training_file_path, file_list, numbe
     print()
 
 
-def create_network_meta_data_file(sess_path, layer_sizes):
+def create_network_meta_data_file(sess_path, layer_sizes, layer_activation_functions):
     file_path = sess_path + "network.meta"
     with open(file_path, 'w') as outfile:
         outfile.write("layer_sizes ")
@@ -67,7 +73,12 @@ def create_network_meta_data_file(sess_path, layer_sizes):
             outfile.write("{} ".format(layer_size))
         outfile.write("\n")
 
-        outfile.write("Epoch_count 0")
+        outfile.write("Epoch_count 0\n")
+
+        outfile.write("layer_activation_functions ")
+        for activation_function in layer_activation_functions:
+            outfile.write("{} ".format(activation_function))
+        outfile.write("\n")
 
 
 def get_network_meta_data(sess_path):
@@ -75,8 +86,9 @@ def get_network_meta_data(sess_path):
     with open(file_path, 'r') as metafile:
         layer_size_list = metafile.readline().split()[1:]
         epoch_count = int(metafile.readline().split(" ")[1])
+        layer_activation_functions = metafile.readline().split()[1:]
 
-    return (list(map(int, layer_size_list)), epoch_count)
+    return (list(map(int, layer_size_list)), layer_activation_functions, epoch_count)
 
 
 def update_epoch_count_network_meta_data(sess_path, epoch_count):
@@ -85,7 +97,7 @@ def update_epoch_count_network_meta_data(sess_path, epoch_count):
     with open(file_path, 'r') as metafile:
         lines = metafile.readlines()
 
-    lines[1] = "Epoch_count {}".format(epoch_count)
+    lines[1] = "Epoch_count {}\n".format(epoch_count)
     with open(file_path, 'w') as metafile:
         for line in lines:
             metafile.write(line)
@@ -108,17 +120,53 @@ def create_emg_network_variables(number_of_neuron_for_layer):
     return (return_variables, bias_variables)
 
 
-def create_emg_network_layers(input_placeholder, variables, bias_variables):
+def create_emg_network_layers_relu(input_placeholder, variables, bias_variables):
+    number_of_variables = len(variables)
+
     layers = []
     current_layer = input_placeholder
-    for theta, bias in zip(variables, bias_variables):
-        layer = tf.sigmoid(tf.matmul(current_layer, theta) + bias)
+    for i in range(number_of_variables):
+        theta = variables[i]
+        bias = bias_variables[i]
+
+        # Use a sigmoidal activation function ###
+        if i < number_of_variables:
+            layer = tf.add(tf.matmul(current_layer, theta) + bias)
+            layer = tf.nn.relu(layer)
+        else:
+            layer = tf.nn.softmax(tf.matmul(current_layer, theta) + bias)
         layers.append(layer)
         current_layer = layer
 
     output = layers.pop()
 
     return (layers, output)
+
+
+def create_emg_network_layers(input_placeholder, variables, bias_variables, layer_activation_functions):
+    layers = []
+    current_layer = input_placeholder
+    number_of_variables = len(variables)
+    for i in range(number_of_variables):
+        theta = variables[i]
+        bias = bias_variables[i]
+
+        activation_function = layer_activation_functions[i]
+        if activation_function == ActivationFunction.SIGMOID:
+            layer = tf.sigmoid(tf.matmul(current_layer, theta) + bias)
+        elif activation_function == ActivationFunction.RELU:
+            layer = tf.add(tf.matmul(current_layer, theta), bias)
+            layer = tf.nn.relu(layer)
+        elif activation_function == ActivationFunction.SOFTMAX:
+            layer = tf.nn.softmax(tf.matmul(current_layer, theta) + bias)
+
+        layers.append(layer)
+        current_layer = layer
+
+    output = layers.pop()
+
+    return (layers, output)
+    # return create_emg_network_layers_ReLu(input_placeholder, variables, bias_variables)
 
 
 def get_training_inputs_and_outputs(training_file_path):
@@ -147,7 +195,7 @@ def get_training_meta_data(training_file_path):
     return(int(training_size), int(n_inputs), int(n_outputs))
 
 
-def create_emg_network(neural_network_session_folder, layer_sizes, training_file_path):
+def create_emg_network(neural_network_session_folder, layer_sizes, layer_activation_functions, training_file_path):
     sess_path_id = time.strftime("%Y-%m-%d-%H%M")
     sess_path = neural_network_session_folder + "{}/".format(sess_path_id)
     if os.path.exists(sess_path):
@@ -165,10 +213,7 @@ def create_emg_network(neural_network_session_folder, layer_sizes, training_file
     layer_sizes[-1] = n_outputs
 
     (theta, bias) = create_emg_network_variables(layer_sizes)
-    (layers, output) = create_emg_network_layers(input_placeholder, theta, bias)
-
-    cost = tf.reduce_mean(tf.square(outputs - output))
-    train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
+    (layers, output) = create_emg_network_layers(input_placeholder, theta, bias, layer_activation_functions)
 
     init = tf.global_variables_initializer()
     sess = tf.Session()
@@ -181,13 +226,15 @@ def create_emg_network(neural_network_session_folder, layer_sizes, training_file
 
     sess_model_path = sess_path + "emg_model"
     saver.save(sess, sess_model_path)
-    create_network_meta_data_file(sess_path, layer_sizes)  # Write meta data of session to file
+    create_network_meta_data_file(sess_path, layer_sizes, layer_activation_functions)  # Write meta data of session to file
 
     print("EMG-network created")
     print("Session path:", sess_model_path)
+    print("Layer sizes:", layer_sizes)
+    print("Layer sizes:", layer_activation_functions)
     tf.reset_default_graph()
 
-    return sess_path_id
+    return sess_path
 
 
 def print_training_info(training_file_path, sess_path):
@@ -202,7 +249,7 @@ def train_emg_network(training_file_path, sess_path):
 
     (inputs, outputs) = get_training_inputs_and_outputs(training_file_path)
     (training_size, n_inputs, n_outputs) = get_training_meta_data(training_file_path)
-    (sess_layer_sizes, old_epoch_count) = get_network_meta_data(sess_path)
+    (sess_layer_sizes, layer_activation_functions, old_epoch_count) = get_network_meta_data(sess_path)
 
     if(n_inputs != sess_layer_sizes[0] or n_outputs != sess_layer_sizes[-1]):
         print("Training file and session is not compatible!")
@@ -226,7 +273,7 @@ def train_emg_network(training_file_path, sess_path):
     i = 0
     number_of_save = 0
     while current_time < run_time and i < n_steps:
-        continue_emg_network_training(sess_path, sess_layer_sizes, inputs, outputs, n_inputs, n_outputs, training_size, n_steps, i)
+        continue_emg_network_training(sess_path, layer_activation_functions, sess_layer_sizes, inputs, outputs, n_inputs, n_outputs, training_size, n_steps, i)
 
         print_training_info(training_file_path, sess_path)
         print("Number of steps:", n_steps)
@@ -260,7 +307,7 @@ def train_emg_network(training_file_path, sess_path):
     print("finished")
 
 
-def continue_emg_network_training(sess_path, sess_layer_sizes, inputs, outputs, n_inputs, n_outputs, training_size, n_steps, epoch_count):
+def continue_emg_network_training(sess_path, activation_functions, sess_layer_sizes, inputs, outputs, n_inputs, n_outputs, training_size, n_steps, epoch_count):
     sess_model_path = get_model_session_path(sess_path)
 
     input_placeholder = tf.placeholder(tf.float32, shape=[training_size, n_inputs], name="input")
@@ -272,8 +319,9 @@ def continue_emg_network_training(sess_path, sess_layer_sizes, inputs, outputs, 
     with tf.Session() as sess:
         saver.restore(sess, sess_model_path)
 
-        (layer, output) = create_emg_network_layers(input_placeholder, theta, bias)
+        (layer, output) = create_emg_network_layers(input_placeholder, theta, bias, activation_functions)
 
+        # Mean Squared Estimate - the simplist cost function (MSE)
         cost = tf.reduce_mean(tf.square(outputs - output))
         train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
@@ -292,7 +340,7 @@ def input_test_emg_network(input_data_handler, sess_path):
 
     test_inputs = [input_data_handler.get_emg_data_features()]
 
-    sess_layer_sizes = get_network_meta_data(sess_path)[0]
+    sess_layer_sizes, layer_activation_functions = get_network_meta_data(sess_path)[:2]
     input_placeholder = tf.placeholder(tf.float32, shape=[1, sess_layer_sizes[0]], name="input")
 
     (theta, bias) = create_emg_network_variables(sess_layer_sizes)
@@ -301,7 +349,7 @@ def input_test_emg_network(input_data_handler, sess_path):
     with tf.Session() as sess:
         saver.restore(sess, sess_model_path)
 
-        (layers, output) = create_emg_network_layers(input_placeholder, theta, bias)
+        output = create_emg_network_layers(input_placeholder, theta, bias, layer_activation_functions)[1]
 
         results = sess.run(output, feed_dict={input_placeholder: test_inputs})
 
