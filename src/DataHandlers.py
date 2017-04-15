@@ -8,10 +8,10 @@ import Utility as Utility
 from DataUtility import Sensor, DataSetFormat, DataSetType
 
 EMG_WAVELET_LEVEL = 1
-NUMBER_OF_FEATURES = 2
+NUMBER_OF_FEATURES = 3
 
-# feature_functions = [Utility.mean_absolute_value, Utility.root_mean_square, Utility.waveform_length]
-feature_functions = [Utility.mean_absolute_value, Utility.root_mean_square]
+feature_functions = [Utility.mean_absolute_value, Utility.root_mean_square, Utility.waveform_length]
+# feature_functions = [Utility.mean_absolute_value, Utility.root_mean_square]
 
 
 class DataHandler:
@@ -148,10 +148,10 @@ class DataHandler:
         return emg_feature_data
 
     def get_emg_data_features(self):
-        # emg_data_features = numpy.append(self.wavelet_feature_extraxtion(), self.raw_emg_feature_extraxtion())
-        # return emg_data_features
-        emg_data_features = numpy.append([], self.raw_emg_feature_extraxtion())
+        emg_data_features = numpy.append(self.wavelet_feature_extraxtion(), self.raw_emg_feature_extraxtion())
         return emg_data_features
+        # emg_data_features = numpy.append([], self.raw_emg_feature_extraxtion())
+        # return emg_data_features
 
 
 class InputDataHandler(DataHandler):

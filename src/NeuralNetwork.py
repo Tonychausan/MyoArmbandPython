@@ -26,8 +26,8 @@ SESS_PATH = None
 
 n_output_nodes = Constant.NUMBER_OF_GESTURES
 
-layer_sizes = [0, 3 * 8, 8, n_output_nodes]  # Network build
-layer_activation_functions = [ActivationFunction.SIGMOID, ActivationFunction.SIGMOID, ActivationFunction.SIGMOID]
+layer_sizes = [0, 150, 150, n_output_nodes]  # Network build
+layer_activation_functions = [ActivationFunction.RELU, ActivationFunction.RELU, ActivationFunction.SOFTMAX]
 
 tf.Session()  # remove warnings... hack...
 
@@ -74,6 +74,7 @@ def train_emg_network():
 
 
 def test_emg_network():
+    print("Session path:", SESS_PATH)
     summary_list = []
 
     for test_file in DataUtility.TEST_FILE_LIST:
@@ -95,6 +96,7 @@ def test_emg_network():
         print("File:", test_file.filename)
 
     print("#############################################################")
+    print("Session path:", SESS_PATH)
     print("Summary List")
 
     success_list = []

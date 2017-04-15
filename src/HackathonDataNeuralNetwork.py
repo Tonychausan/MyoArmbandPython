@@ -8,7 +8,7 @@ import DataHandlers
 import NeuralNetworkUtility
 from NeuralNetworkUtility import ActivationFunction
 
-NUMBER_OF_GESTURES = 2
+NUMBER_OF_GESTURES = 6
 FOLDER_NAME = '../HackathonDataSamples/GestureData/'
 
 
@@ -17,8 +17,8 @@ TRAINING_DATA_FILE_PATH = '../HackathonDataSamples/NeuralNetwork/training_file.d
 
 SESS_PATH = SESSION_FOLDERS + '{}/'.format("2017-03-18-1617")
 
-layer_sizes = [0, 20, 10, 0]  # Network build
-layer_activation_functions = [ActivationFunction.RELU, ActivationFunction.RELU, ActivationFunction.SOFTMAX]
+layer_sizes = [0, 150, 0]  # Network build
+layer_activation_functions = [ActivationFunction.SIGMOID, ActivationFunction.SIGMOID]
 
 
 class File:
@@ -95,6 +95,7 @@ def train_emg_network():
 
 
 def test_emg_network():
+    print("Session path:", SESS_PATH)
     file_list = []
     summary_list = []
 
@@ -126,6 +127,7 @@ def test_emg_network():
         print("File:", test_file.filename)
 
     print("#############################################################")
+    print("Session path:", SESS_PATH)
     print("Summary List")
 
     success_list = []
