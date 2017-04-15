@@ -117,6 +117,11 @@ def test_emg_network():
         print('{:15s}\t{:4d} of {:4d} -> {:.2f}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0], 100 * success_list[i][1] / success_list[i][0]))
 
 
+def input_test_emg_network(input_data_handler):
+    sess_path = EMG_NEURAL_NETWORK_SESSIONS_FOLDER + "{}/".format("2017-03-23-1333")
+    return NeuralNetworkUtility.input_test_emg_network(input_data_handler, sess_path)
+
+
 def print_results(results):
     for result in results:
         print()
