@@ -32,6 +32,12 @@ layer_activation_functions = [ActivationFunction.RELU, ActivationFunction.RELU, 
 tf.Session()  # remove warnings... hack...
 
 
+# testing = NeuralNetworkUtility.NeuralNetwork()
+# testing.set_sess_path(EMG_NEURAL_NETWORK_SESSIONS_FOLDER + "{}/".format("2017-03-23-1333"))
+# testing.set_layer_sizes(layer_sizes)
+# testing.set_layer_activation_functions(layer_activation_functions)
+
+
 def set_sess_path(session_name):
     global SESS_PATH
     SESS_PATH = EMG_NEURAL_NETWORK_SESSIONS_FOLDER + "{}/".format(session_name)
@@ -67,10 +73,12 @@ def create_emg_training_file():
 def create_emg_network():
     global SESS_PATH
     SESS_PATH = NeuralNetworkUtility.create_emg_network(EMG_NEURAL_NETWORK_SESSIONS_FOLDER, layer_sizes, layer_activation_functions, TRAINING_DATA_FILE_PATH)
+    # testing.create_emg_network(EMG_NEURAL_NETWORK_SESSIONS_FOLDER, layer_sizes, TRAINING_DATA_FILE_PATH)
 
 
 def train_emg_network():
     NeuralNetworkUtility.train_emg_network(TRAINING_DATA_FILE_PATH, SESS_PATH)
+    # testing.train_emg_network(TRAINING_DATA_FILE_PATH)
 
 
 def test_emg_network():
@@ -122,6 +130,7 @@ def test_emg_network():
 def input_test_emg_network(input_data_handler):
     sess_path = EMG_NEURAL_NETWORK_SESSIONS_FOLDER + "{}/".format("2017-03-23-1333")
     return NeuralNetworkUtility.input_test_emg_network(input_data_handler, sess_path)
+    # return testing.input_test_emg_network(input_data_handler)
 
 
 def print_results(results):

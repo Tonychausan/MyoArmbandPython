@@ -335,11 +335,12 @@ def input_test_emg_network(input_data_handler, sess_path):
 
 
 class NeuralNetwork:
+
     def __init__(self):
         self.epoch_count = 0
 
         self.set_sess_path("")
-        self.set_layer_size([])
+        self.set_layer_sizes([])
         self.set_layer_activation_functions([])
         pass
 
@@ -348,19 +349,34 @@ class NeuralNetwork:
         self.file_path = sess_path + "network.meta"
         self.sess_model_path = sess_path + "emg_model"
 
-    def set_layer_size(self, layer_sizes):
+    def set_layer_sizes(self, layer_sizes):
         self.layer_sizes = layer_sizes
 
     def set_layer_activation_functions(self, layer_activation_functions):
         self.layer_activation_functions = layer_activation_functions
 
+    def create_network_meta_data_file(self):
+        file_path = self.sess_path + "network.meta"
+        with open(file_path, 'w') as outfile:
+            outfile.write("layer_sizes ")
+            for layer_size in self.layer_sizes:
+                outfile.write("{} ".format(layer_size))
+            outfile.write("\n")
+
+            outfile.write("Epoch_count 0\n")
+
+            outfile.write("layer_activation_functions ")
+            for activation_function in self.layer_activation_functions:
+                outfile.write("{} ".format(activation_function))
+            outfile.write("\n")
+
     def get_network_meta_data(self):
         with open(self.file_path, 'r') as metafile:
-            self.set_layer_size(metafile.readline().split()[1:])
+            self.set_layer_sizes([int(x) for x in metafile.readline().split()[1:]])
             self.epoch_count = int(metafile.readline().split(" ")[1])
             self.set_layer_activation_functions(metafile.readline().split()[1:])
 
-        return (list(map(int, self.layer_size_list)), self.layer_activation_functions, self.epoch_count)
+        return (list(map(int, self.layer_sizes)), self.layer_activation_functions, self.epoch_count)
 
     def update_epoch_count_network_meta_data(self):
         with open(self.file_path, 'r') as metafile:
@@ -429,7 +445,7 @@ class NeuralNetwork:
 
         return (inputs, outputs)
 
-    def get_training_meta_data(training_file_path):
+    def get_training_meta_data(self, training_file_path):
         with open(training_file_path, 'r') as training_data_file:
             (training_size, n_inputs, n_outputs) = training_data_file.readline().split()
 
@@ -482,7 +498,7 @@ class NeuralNetwork:
         print("Training session:", self.sess_path)
 
     def train_emg_network(self, training_file_path):
-        print_training_info(training_file_path)
+        self.print_training_info(training_file_path)
 
         (inputs, outputs) = get_training_inputs_and_outputs(training_file_path)
         (training_size, n_inputs, n_outputs) = get_training_meta_data(training_file_path)
@@ -510,9 +526,9 @@ class NeuralNetwork:
         i = 0
         number_of_save = 0
         while current_time < run_time and i < n_steps:
-            continue_emg_network_training(inputs, outputs, n_inputs, n_outputs, training_size, n_steps, i)
+            self.continue_emg_network_training(inputs, outputs, n_inputs, n_outputs, training_size, n_steps, i)
 
-            print_training_info(training_file_path)
+            self.print_training_info(training_file_path)
             print("Number of steps:", n_steps)
             print("Max Time (hours):", run_time / 3600)
             print()
@@ -537,7 +553,7 @@ class NeuralNetwork:
             print('Estimated time: {:.0f}h {:.0f}min {:.0f}sec'.format(hours, minutes, seconds))
 
             print('Batch:', i)
-            update_epoch_count_network_meta_data(old_epoch_count + i)
+            self.update_epoch_count_network_meta_data()
 
         print()
         print("Runtime:", "{0:.2f}".format(float(time.time() - start_time)) + "sec")

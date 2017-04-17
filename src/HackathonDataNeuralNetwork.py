@@ -17,7 +17,7 @@ TRAINING_DATA_FILE_PATH = '../HackathonDataSamples/NeuralNetwork/training_file.d
 
 SESS_PATH = SESSION_FOLDERS + '{}/'.format("2017-03-18-1617")
 
-layer_sizes = [0, 150, 0]  # Network build
+layer_sizes = [0, 150, 150, 150, 0]  # Network build
 layer_activation_functions = [ActivationFunction.SIGMOID, ActivationFunction.SIGMOID]
 
 
