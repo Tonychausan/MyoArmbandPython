@@ -14,6 +14,7 @@ import CompareMethods
 import NeuralNetwork
 import DeviceListener
 import HackathonDataNeuralNetwork
+import NeuralNetworkUtility
 
 
 class MenuItem:
@@ -164,24 +165,35 @@ def remove_all_compressed_files():
 def neural_network_testing():
     use_hackathon_samples = input("Use hackathon samples (1) or press enter: ")
 
+    # if use_hackathon_samples == '1':
+    #     NetworkFunction = HackathonDataNeuralNetwork
+    # else:
+    #     NetworkFunction = NeuralNetwork
+
+    is_hackathon = False
     if use_hackathon_samples == '1':
-        NetworkFunction = HackathonDataNeuralNetwork
+        DataFile = HackathonDataNeuralNetwork
+        is_hackathon = True
     else:
-        NetworkFunction = NeuralNetwork
+        DataFile = NeuralNetwork
+
+    network_session = NeuralNetworkUtility.NeuralNetwork(DataFile.SESSION_FOLDERS, DataFile.DATA_HANDLER_TYPE, is_hackathon)
+    # testing.set_layer_sizes(layer_sizes)
+    # testing.set_layer_activation_functions(layer_activation_functions)
 
     nn_menu_list = []
-    nn_menu_list.append(MenuItem("Select a session", NetworkFunction.select_sess_path))
-    nn_menu_list.append(MenuItem("Create training file", NetworkFunction.create_emg_training_file))
-    nn_menu_list.append(MenuItem("Create network", NetworkFunction.create_emg_network))
-    nn_menu_list.append(MenuItem("Train network", NetworkFunction.train_emg_network))
-    nn_menu_list.append(MenuItem("Test data", NetworkFunction.test_emg_network))
+    nn_menu_list.append(MenuItem("Select a session", network_session.select_sess_path))
+    # nn_menu_list.append(MenuItem("Create training file", network_session.create_emg_training_file))
+    nn_menu_list.append(MenuItem("Create network", network_session.create_emg_network))
+    nn_menu_list.append(MenuItem("Train network", network_session.train_emg_network))
+    nn_menu_list.append(MenuItem("Test data", network_session.test_emg_network))
 
-    NetworkFunction.set_default_sess_path()
-    
+    # NetworkFunction.set_default_sess_path()
+
     while True:
         os.system('cls')
         print("Neural Network menu")
-        print("current session path:", NetworkFunction.SESS_PATH)
+        print("current session path:", network_session.sess_path)
         print("####################################################")
         action = print_menu(nn_menu_list)
         nn_menu_list[action].function()
@@ -233,7 +245,9 @@ def create_gesture_files():
 
             folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
 
-            results = NeuralNetwork.input_test_emg_network(listener.data_handler)
+            network_session = NeuralNetworkUtility.NeuralNetwork(NeuralNetwork.SESSION_FOLDERS, NeuralNetwork.DATA_HANDLER_TYPE, False)
+
+            results = network_session.input_test_emg_network(listener.data_handler)
             recognized_gesture = numpy.argmax(results)
             NeuralNetwork.print_results(results)
 
@@ -252,6 +266,8 @@ def create_gesture_files():
                     gesture_recorded = recognized_gesture
                 elif not Utility.is_int_input(gesture_recorded):
                     gesture_recorded = -1
+                else:
+                    gesture_recorded = int(gesture_recorded)
 
             if(gesture_recorded == Gesture.NUMBER_OF_GESTURES):
                 if last_file is not None:

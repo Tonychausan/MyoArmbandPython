@@ -13,6 +13,8 @@ import Utility
 import NeuralNetworkUtility
 from NeuralNetworkUtility import ActivationFunction
 
+NUMBER_OF_GESTURES = Gesture.NUMBER_OF_GESTURES
+
 # Constants
 NEURAL_NETWORK_DATA_PATH = Constant.DATA_SET_FOLDER + "nn_data/"
 SESSIONS_FOLDER_NAME = "sessions/"
@@ -22,7 +24,11 @@ EMG_NEURAL_NETWORK_DATA_PATH = NEURAL_NETWORK_DATA_PATH + "emg_network/"
 EMG_NEURAL_NETWORK_SESSIONS_FOLDER = EMG_NEURAL_NETWORK_DATA_PATH + SESSIONS_FOLDER_NAME
 TRAINING_DATA_FILE_PATH = EMG_NEURAL_NETWORK_DATA_PATH + "training_file.data"
 
+NETWORKS_FOLDER = EMG_NEURAL_NETWORK_DATA_PATH
+SESSION_FOLDERS = EMG_NEURAL_NETWORK_SESSIONS_FOLDER
 SESS_PATH = None
+
+DATA_HANDLER_TYPE = DataHandlers.FileDataHandler
 
 n_output_nodes = Constant.NUMBER_OF_GESTURES
 
@@ -30,12 +36,6 @@ layer_sizes = [0, 150, 150, n_output_nodes]  # Network build
 layer_activation_functions = [ActivationFunction.RELU, ActivationFunction.RELU, ActivationFunction.SOFTMAX]
 
 tf.Session()  # remove warnings... hack...
-
-
-# testing = NeuralNetworkUtility.NeuralNetwork()
-# testing.set_sess_path(EMG_NEURAL_NETWORK_SESSIONS_FOLDER + "{}/".format("2017-03-23-1333"))
-# testing.set_layer_sizes(layer_sizes)
-# testing.set_layer_activation_functions(layer_activation_functions)
 
 
 def set_sess_path(session_name):
@@ -85,7 +85,9 @@ def test_emg_network():
     print("Session path:", SESS_PATH)
     summary_list = []
 
-    for test_file in DataUtility.TEST_FILE_LIST:
+    file_list = DataUtility.TEST_FILE_LIST
+
+    for test_file in file_list:
         data_handler = DataHandlers.FileDataHandler(test_file)
 
         start_time = time.time()

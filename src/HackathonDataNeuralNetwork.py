@@ -6,19 +6,20 @@ import re
 
 import DataHandlers
 import NeuralNetworkUtility
-from NeuralNetworkUtility import ActivationFunction
+#from NeuralNetworkUtility import ActivationFunction
 
 NUMBER_OF_GESTURES = 6
 FOLDER_NAME = '../HackathonDataSamples/GestureData/'
 
+NETWORKS_FOLDER = '../HackathonDataSamples/NeuralNetwork/'
 
 SESSION_FOLDERS = '../HackathonDataSamples/NeuralNetwork/Sessions/'
 TRAINING_DATA_FILE_PATH = '../HackathonDataSamples/NeuralNetwork/training_file.data'
 
 SESS_PATH = SESSION_FOLDERS + '{}/'.format("2017-03-18-1617")
 
-layer_sizes = [0, 150, 150, 150, 0]  # Network build
-layer_activation_functions = [ActivationFunction.SIGMOID, ActivationFunction.SIGMOID]
+#layer_sizes = [0, 150, 150, 150, 0]  # Network build
+#layer_activation_functions = [ActivationFunction.SIGMOID, ActivationFunction.SIGMOID]
 
 
 class File:
@@ -40,6 +41,9 @@ class File:
 class HackathonSamplesDataHandler(DataHandlers.DataHandler):
     def __init__(self, file):
         self.emg_data = numpy.genfromtxt(file.get_file_path(), delimiter=',')
+
+
+DATA_HANDLER_TYPE = HackathonSamplesDataHandler
 
 
 def set_sess_path(session_name):
@@ -83,6 +87,38 @@ def create_emg_training_file():
     data_handler = HackathonSamplesDataHandler(file)
     n_input_nodes = len(data_handler.get_emg_data_features())
     NeuralNetworkUtility.create_emg_training_file(n_input_nodes, TRAINING_DATA_FILE_PATH, file_list, NUMBER_OF_GESTURES, HackathonSamplesDataHandler)
+
+
+def get_training_file_list():
+    file_list = []
+    folder = FOLDER_NAME
+    for filename in os.listdir(folder):
+        if filename == ".gitignore":
+            continue
+
+        file = File(filename, folder)
+
+        if file.example_id <= 1500 and file.gesture < NUMBER_OF_GESTURES:
+            file_list.append(file)
+
+    return file_list
+
+
+def get_test_file_list():
+    file_list = []
+    folder = FOLDER_NAME
+    for filename in os.listdir(folder):
+        if filename == ".gitignore":
+            continue
+
+        file = File(filename, folder)
+
+        if file.example_id > 1500 and file.gesture < NUMBER_OF_GESTURES:
+            file_list.append(file)
+
+    return file_list
+
+
 
 
 def create_emg_network():
