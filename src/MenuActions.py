@@ -165,11 +165,6 @@ def remove_all_compressed_files():
 def neural_network_testing():
     use_hackathon_samples = input("Use hackathon samples (1) or press enter: ")
 
-    # if use_hackathon_samples == '1':
-    #     NetworkFunction = HackathonDataNeuralNetwork
-    # else:
-    #     NetworkFunction = NeuralNetwork
-
     is_hackathon = False
     if use_hackathon_samples == '1':
         DataFile = HackathonDataNeuralNetwork
@@ -178,17 +173,11 @@ def neural_network_testing():
         DataFile = NeuralNetwork
 
     network_session = NeuralNetworkUtility.NeuralNetwork(DataFile.SESSION_FOLDERS, DataFile.DATA_HANDLER_TYPE, is_hackathon)
-    # testing.set_layer_sizes(layer_sizes)
-    # testing.set_layer_activation_functions(layer_activation_functions)
-
     nn_menu_list = []
     nn_menu_list.append(MenuItem("Select a session", network_session.select_sess_path))
-    # nn_menu_list.append(MenuItem("Create training file", network_session.create_emg_training_file))
     nn_menu_list.append(MenuItem("Create network", network_session.create_emg_network))
     nn_menu_list.append(MenuItem("Train network", network_session.train_emg_network))
     nn_menu_list.append(MenuItem("Test data", network_session.test_emg_network))
-
-    # NetworkFunction.set_default_sess_path()
 
     while True:
         os.system('cls')
@@ -249,7 +238,7 @@ def create_gesture_files():
 
             results = network_session.input_test_emg_network(listener.data_handler)
             recognized_gesture = numpy.argmax(results)
-            NeuralNetwork.print_results(results)
+            network_session.print_results(results)
 
             # Print number to gesture table
             print()
@@ -290,22 +279,3 @@ def create_gesture_files():
         print('\nQuit')
 
     hub.shutdown()  # !! crucial
-
-
-main_menu_list = [
-    MenuItem("Try gestures", live_gesture_recognition),
-    MenuItem("Measurment display", print_myo_data),
-    MenuItem("Compress Files", compress_json_files),
-    MenuItem("Delete all compressed files", remove_all_compressed_files),
-    MenuItem("Pre-data gesture test", compare_prerecorded_files),
-    MenuItem("Create Gesture-files", create_gesture_files),
-    MenuItem("Neural Network Menu", neural_network_testing)
-]
-
-nn_menu_list = [
-    MenuItem("Select a session", NeuralNetwork.select_sess_path),
-    MenuItem("Create training file", NeuralNetwork.create_emg_training_file),
-    MenuItem("Create network", NeuralNetwork.create_emg_network),
-    MenuItem("Train network", NeuralNetwork.train_emg_network),
-    MenuItem("Test data", NeuralNetwork.test_emg_network)
-]
