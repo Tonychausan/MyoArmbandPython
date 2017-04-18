@@ -7,11 +7,10 @@ import Constants as Constant
 import Utility as Utility
 from DataUtility import Sensor, DataSetFormat, DataSetType
 
-EMG_WAVELET_LEVEL = 1
 NUMBER_OF_FEATURES = 3
-
-feature_functions = [Utility.mean_absolute_value, Utility.root_mean_square, Utility.waveform_length]
 # feature_functions = [Utility.mean_absolute_value, Utility.root_mean_square]
+
+full_feature_function_list = [Utility.mean_absolute_value, Utility.root_mean_square, Utility.waveform_length]
 
 
 class DataHandler:
@@ -20,6 +19,9 @@ class DataHandler:
         self.acc_data = []
         self.gyr_data = []
         self.ori_data = []
+
+        self.emg_wavelet_level = 1
+        self.feature_functions = full_feature_function_list
 
     def set_sensor_data(self, data, sensor):
         if sensor == Sensor.EMG:
@@ -77,11 +79,21 @@ class DataHandler:
         emg_waveform_length_list = Utility.NormalizeArray(emg_waveform_length_list)
         return emg_waveform_length_list
 
+    def set_emg_wavelet_level(self, wavelet_level):
+        self.emg_wavelet_level = wavelet_level
+
+    def set_feature_functions_list(self, feature_check_list):
+        self.feature_functions = []
+        for i in range(len(full_feature_function_list)):
+            if feature_check_list[i]:
+                self.feature_functions.append(full_feature_function_list[i])
+
     # http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=7150944&tag=1
     def wavelet_feature_extraxtion(self):
+        feature_functions = self.feature_functions
         emg_feature_data = []
 
-        n = EMG_WAVELET_LEVEL
+        n = self.emg_wavelet_level
         for emg_id in range(len(self.emg_data)):
             emg_array = self.emg_data[emg_id]
 
@@ -132,6 +144,7 @@ class DataHandler:
         return numpy.array(emg_feature_data).flatten()
 
     def raw_emg_feature_extraxtion(self):
+        feature_functions = self.feature_functions
         emg_feature_data = []
         for emg_id in range(len(self.emg_data)):
             emg_array = self.emg_data[emg_id]
@@ -148,10 +161,11 @@ class DataHandler:
         return emg_feature_data
 
     def get_emg_data_features(self):
-        emg_data_features = numpy.append(self.wavelet_feature_extraxtion(), self.raw_emg_feature_extraxtion())
+        if self.emg_wavelet_level > 0:
+            emg_data_features = numpy.append(self.wavelet_feature_extraxtion(), self.raw_emg_feature_extraxtion())
+        else:
+            emg_data_features = numpy.append([], self.raw_emg_feature_extraxtion())
         return emg_data_features
-        # emg_data_features = numpy.append([], self.raw_emg_feature_extraxtion())
-        # return emg_data_features
 
 
 class InputDataHandler(DataHandler):

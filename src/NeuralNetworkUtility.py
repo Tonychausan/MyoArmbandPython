@@ -32,9 +32,11 @@ class NeuralNetwork:
         self.data_handler_type = data_handler_type
         self.is_hackathon = is_hackathon
 
-        self.set_sess_path(self.session_folder + os.listdir(self.session_folder)[-1])
+        self.set_sess_path(self.session_folder + os.listdir(self.session_folder)[-1] + "/")
         self.set_layer_sizes([])
         self.set_layer_activation_functions([])
+        self.wavelet_level = 0
+        self.feature_function_check_list = [0, 0, 0]
 
     def get_number_of_gesture(self):
         if self.is_hackathon:
@@ -43,7 +45,7 @@ class NeuralNetwork:
             return Gesture.NUMBER_OF_GESTURES
 
     def set_sess_path(self, sess_path):
-        self.sess_path = sess_path + "/"
+        self.sess_path = sess_path
         self.file_path = self.sess_path + "network.meta"
         self.sess_model_path = self.sess_path + "emg_model"
 
@@ -67,7 +69,7 @@ class NeuralNetwork:
         if session_choice >= len(session_folder_list) or session_choice < 0:
             return
 
-        self.set_sess_path(session_folder_list[int(session_choice)])
+        self.set_sess_path(self.session_folder + session_folder_list[int(session_choice)] + "/")
 
     def create_network_meta_data_file(self):
         file_path = self.sess_path + "network.meta"
@@ -84,11 +86,21 @@ class NeuralNetwork:
                 outfile.write("{} ".format(activation_function))
             outfile.write("\n")
 
+            outfile.write("Wavelet_level {}\n".format(self.wavelet_level))
+            
+            outfile.write("Features ")
+            for feature in self.feature_function_check_list:
+                outfile.write("{} ".format(feature))
+            outfile.write("\n")
+
     def get_network_meta_data(self):
         with open(self.file_path, 'r') as metafile:
             self.set_layer_sizes([int(x) for x in metafile.readline().split()[1:]])
             self.epoch_count = int(metafile.readline().split(" ")[1])
             self.set_layer_activation_functions(metafile.readline().split()[1:])
+
+            self.wavelet_level = int(metafile.readline().split(" ")[1])
+            self.feature_function_check_list = [int(x) for x in metafile.readline().split()[1:]]
 
         return (list(map(int, self.layer_sizes)), self.layer_activation_functions, self.epoch_count)
 
@@ -168,6 +180,8 @@ class NeuralNetwork:
 
     def create_emg_training_file(self, file_list, training_file_path):
         data_handler = DataHandlers.FileDataHandler(DataUtility.TRAINING_FILE_LIST[0])
+        data_handler.set_emg_wavelet_level(self.wavelet_level)
+        data_handler.set_feature_functions_list(self.feature_function_check_list)
         n_input_nodes = len(data_handler.get_emg_data_features())
 
         if self.is_hackathon:
@@ -183,9 +197,11 @@ class NeuralNetwork:
 
             for i in range(size_of_training):
                 data_file = file_list[i]
-                print("Progress: {}%".format(int(((i + 1) / size_of_training) * 100)), end="\r")
+                print("Training file progress: {}%".format(int(((i + 1) / size_of_training) * 100)), end="\r")
 
                 data_handler = self.data_handler_type(data_file)
+                data_handler.set_emg_wavelet_level(self.wavelet_level)
+                data_handler.set_feature_functions_list(self.feature_function_check_list)
                 emg_sums = data_handler.get_emg_data_features()
 
                 for i in range(n_input_nodes):
@@ -228,20 +244,35 @@ class NeuralNetwork:
         if not os.path.exists(self.sess_path):
             os.makedirs(self.sess_path)
 
-        print("Create EMG-training file")
+        print("\nCreate EMG-training file")
         training_file_path = self.sess_path + "training_file.data"
 
         if not self.is_hackathon:
             file_list = DataUtility.TRAINING_FILE_LIST
         else:
             file_list = HackathonDataNeuralNetwork.get_training_file_list()
+
+        wavelet_level = input("Use Wavelet Level: ")
+        if Utility.is_int_input(wavelet_level):
+            self.wavelet_level = int(wavelet_level)
+        print()
+
+        self.feature_function_check_list = [0, 0, 0]
+        feature_name_list = ["Mean Absoulute Value", "Root Mean Square", "Waveform Length"]
+        for i in range(len(feature_name_list)):
+            use_feature = input("Use {} (y/n): ".format(feature_name_list[i]))
+            if use_feature == 'y':
+                self.feature_function_check_list[i] = 1
+        print()
+
         self.create_emg_training_file(file_list, training_file_path)
 
         print("Create Network")
-        number_of_hidden_layers = int(input("Input number of hidden layers: "))
+        number_of_hidden_layers = int(input("Number of hidden layers: "))
+        print()
         self.layer_sizes = [0] * (number_of_hidden_layers + 2)
         self.layer_activation_functions = [ActivationFunction.SIGMOID] * (number_of_hidden_layers + 1)
-        print("Input the number of neurons for each hidden layer")
+        print("Number of neurons for each hidden layer")
 
         for i in range(number_of_hidden_layers):
             hidden_layer_id = i + 1
@@ -265,13 +296,15 @@ class NeuralNetwork:
         saver = tf.train.Saver()
 
         saver.save(sess, self.sess_model_path)
-        self.create_network_meta_data_file()  # Write meta data of session to file
 
         print("\n\nNetwork created")
         print("Session path:", self.sess_model_path)
         print("Layer sizes:", self.layer_sizes)
-        print("Layer sizes:", self.layer_activation_functions)
+        print("Layer activation functions:", self.layer_activation_functions)
         tf.reset_default_graph()
+
+        print("\nCreate meta-data file")
+        self.create_network_meta_data_file()  # Write meta data of session to file
 
     def print_training_info(self, training_file_path):
         os.system('cls')
@@ -368,6 +401,7 @@ class NeuralNetwork:
         tf.reset_default_graph()
 
     def test_emg_network(self):
+        self.get_network_meta_data()
         print("Session path:", self.sess_path)
         summary_list = []
 
@@ -378,6 +412,8 @@ class NeuralNetwork:
 
         for test_file in file_list:
             data_handler = self.data_handler_type(test_file)
+            data_handler.set_emg_wavelet_level(self.wavelet_level)
+            data_handler.set_feature_functions_list(self.feature_function_check_list)
 
             start_time = time.time()
             results = self.input_test_emg_network(data_handler)
@@ -424,8 +460,8 @@ class NeuralNetwork:
 
     def input_test_emg_network(self, input_data_handler):
         test_inputs = [input_data_handler.get_emg_data_features()]
-
         self.get_network_meta_data()
+        
         input_placeholder = tf.placeholder(tf.float32, shape=[1, self.layer_sizes[0]], name="input")
 
         (theta, bias) = self.create_emg_network_variables()
