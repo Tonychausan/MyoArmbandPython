@@ -92,7 +92,8 @@ class NeuralNetwork:
 
         return (list(map(int, self.layer_sizes)), self.layer_activation_functions, self.epoch_count)
 
-    def update_epoch_count_network_meta_data(self):
+    def update_epoch_count_network_meta_data(self, epoch_count):
+        self.epoch_count = epoch_count
         with open(self.file_path, 'r') as metafile:
             lines = metafile.readlines()
 
@@ -300,20 +301,27 @@ class NeuralNetwork:
         current_time = time.time() - start_time
 
         i = 0
-        number_of_save = 0
+        global_step = old_epoch_count
+
+        self.print_training_info(training_file_path)
+        print("Number of steps:", n_steps)
+        print('Current time: {:.0f}h {:.0f}min {:.0f}sec'.format(0, 0, 0))
+        print('Estimated time: {:.0f}h {:.0f}min {:.0f}sec'.format(0, 0, 0))
+        print('Batch:', global_step)
+        print()
+
         while i < n_steps:
-            self.continue_emg_network_training(inputs, outputs, n_inputs, n_outputs, training_size, n_steps, i)
+            self.continue_emg_network_training(inputs, outputs, n_inputs, n_outputs, training_size, n_steps, global_step)
 
             self.print_training_info(training_file_path)
             print("Number of steps:", n_steps)
             print()
 
-            number_of_save += 1
-            print("Number of save:", number_of_save)
-
-            if i + N_EPOCH <= n_steps:
+            if global_step + N_EPOCH <= n_steps:
+                global_step += N_EPOCH
                 i += N_EPOCH
             else:
+                global_step += (n_steps % N_EPOCH)
                 i += (n_steps % N_EPOCH)
 
             current_time = time.time() - start_time
@@ -323,12 +331,12 @@ class NeuralNetwork:
             if i == 0:
                 estimated_time = 0
             else:
-                estimated_time = (current_time / i) * (n_steps)
+                estimated_time = (current_time / i) * (n_steps - old_epoch_count)
             (hours, minutes, seconds) = Utility.second_to_HMS(estimated_time)
             print('Estimated time: {:.0f}h {:.0f}min {:.0f}sec'.format(hours, minutes, seconds))
 
-            print('Batch:', i)
-            self.update_epoch_count_network_meta_data()
+            print('Batch:', global_step)
+            self.update_epoch_count_network_meta_data(global_step)
 
         print()
         print("Runtime:", "{0:.2f}".format(float(time.time() - start_time)) + "sec")
@@ -442,4 +450,3 @@ class NeuralNetwork:
 
         print()
         print("Recognized:", Gesture.gesture_to_string(np.argmax(results)))
-
