@@ -183,10 +183,13 @@ def neural_network_testing():
         os.system('cls')
         print("Neural Network menu")
         print("current session path:", network_session.sess_path)
+
+        print()
+        network_session.print_sess_info(network_session.sess_path)
+        print()
         print("####################################################")
         action = print_menu(nn_menu_list)
         nn_menu_list[action].function()
-        input("Press Enter to continue...")
 
 
 def live_gesture_recognition():
@@ -199,7 +202,7 @@ def live_gesture_recognition():
     try:
         while True:
             print()
-            input("Press Enter to continue...")
+            input("\nPress Enter to continue...")
             listener.recording_on()
             while listener.is_recording:
                 pass

@@ -4,6 +4,7 @@ import time
 import datetime
 import os
 import numpy
+import json
 
 
 import Utility
@@ -55,11 +56,22 @@ class NeuralNetwork:
     def set_layer_activation_functions(self, layer_activation_functions):
         self.layer_activation_functions = layer_activation_functions
 
+    def print_sess_info(self, session_path):
+        meta_data_path = session_path + "/" + "network.meta"
+        with open(meta_data_path, 'r') as metafile:
+            print("{:20s}".format("Number of gestures:"), metafile.readline().split()[1:][-1])
+            metafile.readline()  # epoch count
+            metafile.readline()  # layer functions
+            print("{:20s}".format("Wavelet level:"), int(metafile.readline().split(" ")[1]))
+            print("{:20s}".format("[MAV, RMS, WL]:"), [int(x) for x in metafile.readline().split()[1:]])
+
     def select_sess_path(self):
         session_folder_list = os.listdir(self.session_folder)
 
         for i in range(len(session_folder_list)):
             print("{})".format(i), session_folder_list[i])
+            self.print_sess_info(self.session_folder + session_folder_list[i])
+            print()
         session_choice = input("Select a session to use: ")
         try:
             session_choice = int(session_choice)
@@ -87,7 +99,7 @@ class NeuralNetwork:
             outfile.write("\n")
 
             outfile.write("Wavelet_level {}\n".format(self.wavelet_level))
-            
+
             outfile.write("Features ")
             for feature in self.feature_function_check_list:
                 outfile.write("{} ".format(feature))
@@ -306,6 +318,8 @@ class NeuralNetwork:
         print("\nCreate meta-data file")
         self.create_network_meta_data_file()  # Write meta data of session to file
 
+        input("\nPress Enter to continue...")
+
     def print_training_info(self, training_file_path):
         os.system('cls')
         print("Train Network")
@@ -374,6 +388,7 @@ class NeuralNetwork:
         print()
         print("Runtime:", "{0:.2f}".format(float(time.time() - start_time)) + "sec")
         print("finished")
+        input("Press Enter to continue...")
 
     def continue_emg_network_training(self, inputs, outputs, n_inputs, n_outputs, training_size, n_steps, epoch_count):
         input_placeholder = tf.placeholder(tf.float32, shape=[training_size, n_inputs], name="input")
@@ -458,10 +473,12 @@ class NeuralNetwork:
         for i in range(number_of_gestures):
             print('{:15s}\t{:4d} of {:4d} -> {:.2f}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0], 100 * success_list[i][1] / success_list[i][0]))
 
+        input("Press Enter to continue...")
+
     def input_test_emg_network(self, input_data_handler):
         test_inputs = [input_data_handler.get_emg_data_features()]
         self.get_network_meta_data()
-        
+
         input_placeholder = tf.placeholder(tf.float32, shape=[1, self.layer_sizes[0]], name="input")
 
         (theta, bias) = self.create_emg_network_variables()
@@ -486,3 +503,7 @@ class NeuralNetwork:
 
         print()
         print("Recognized:", Gesture.gesture_to_string(np.argmax(results)))
+
+    def write_result_to_file(self, results):
+        for result in results:
+
