@@ -310,7 +310,7 @@ class NeuralNetwork:
         print('Batch:', global_step)
         print()
 
-        while i < n_steps:
+        while global_step < n_steps:
             self.continue_emg_network_training(inputs, outputs, n_inputs, n_outputs, training_size, n_steps, global_step)
 
             self.print_training_info(training_file_path)
@@ -321,8 +321,8 @@ class NeuralNetwork:
                 global_step += N_EPOCH
                 i += N_EPOCH
             else:
-                global_step += (n_steps % N_EPOCH)
-                i += (n_steps % N_EPOCH)
+                global_step += ((n_steps - old_epoch_count) % N_EPOCH)
+                i += ((n_steps - old_epoch_count) % N_EPOCH)
 
             current_time = time.time() - start_time
             (hours, minutes, seconds) = Utility.second_to_HMS(current_time)
