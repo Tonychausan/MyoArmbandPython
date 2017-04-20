@@ -1,0 +1,1040 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"print",
+				"print_sess_info\tfunction"
+			],
+			[
+				"get",
+				"get_network_meta_data\tfunction"
+			],
+			[
+				"set",
+				"set_sess_path\tfunction"
+			],
+			[
+				"num",
+				"number_of_gestures\tstatement"
+			],
+			[
+				"pos",
+				"possible_gesture\tstatement"
+			],
+			[
+				"Ge",
+				"Gesture\tclass"
+			],
+			[
+				"Ges",
+				"gesture_margin\tstatement"
+			],
+			[
+				"su",
+				"is_success"
+			],
+			[
+				"va",
+				"value_treshold\tstatement"
+			],
+			[
+				"numb",
+				"number_of_possible_gestures\tstatement"
+			],
+			[
+				"i",
+				"i\tstatement"
+			],
+			[
+				"po",
+				"possible_gesture_result\tstatement"
+			],
+			[
+				"ges",
+				"gesture_margin\tstatement"
+			],
+			[
+				"inp",
+				"input_parameter\tfunction"
+			],
+			[
+				"max",
+				"max_value\tparam"
+			],
+			[
+				"de",
+				"default_value\tparam"
+			],
+			[
+				"is",
+				"is_int_input\tfunction"
+			],
+			[
+				"input",
+				"input_text\tparam"
+			],
+			[
+				"suc",
+				"Success"
+			],
+			[
+				"re",
+				"recognized_gesture\tstatement"
+			],
+			[
+				"gest",
+				"gesture_to_string\tfunction"
+			],
+			[
+				"result",
+				"result_object\tforstmt"
+			],
+			[
+				"r",
+				"Recognized"
+			],
+			[
+				"js",
+				"json_result_data\tstatement"
+			],
+			[
+				"men",
+				"MenuList\tclass"
+			],
+			[
+				"menu",
+				"MenuUtility\tmodule"
+			],
+			[
+				"ge",
+				"gesture_to_string\tfunction"
+			],
+			[
+				"fi",
+				"filename"
+			],
+			[
+				"resu",
+				"ResultJsonName\tclass"
+			],
+			[
+				"Res",
+				"ResultJsonName\tclass"
+			],
+			[
+				"resul",
+				"result_data\tstatement"
+			],
+			[
+				"res",
+				"results_folder_path\tstatement"
+			],
+			[
+				"list",
+				"list_results"
+			],
+			[
+				"file",
+				"file_path\tstatement"
+			],
+			[
+				"ses",
+				"sess_path\tstatement"
+			],
+			[
+				"net",
+				"network_session\tstatement"
+			],
+			[
+				"sess",
+				"sess_id"
+			],
+			[
+				"data_ha",
+				"input_data_handler"
+			],
+			[
+				"feat",
+				"feature_function_check_list\tstatement"
+			],
+			[
+				"if",
+				"if\tIf Condition"
+			],
+			[
+				"inpu",
+				"input\tfunction"
+			],
+			[
+				"wave",
+				"wavelet_level"
+			],
+			[
+				"fe",
+				"feature_function_check_list"
+			],
+			[
+				"us",
+				"use_mav\tstatement"
+			],
+			[
+				"emg",
+				"emg_wavelet_level\tstatement"
+			],
+			[
+				"emg_wa",
+				"emg_wavelet_level\tstatement"
+			],
+			[
+				"ep",
+				"epoch_count\tstatement"
+			],
+			[
+				"globa",
+				"global_step\tstatement"
+			],
+			[
+				"glo",
+				"global_step\tstatement"
+			],
+			[
+				"number_of",
+				"number_of_gestures"
+			],
+			[
+				"sig",
+				"SIGMOID"
+			],
+			[
+				"hid",
+				"hidden_layer_id\tstatement"
+			],
+			[
+				"layer",
+				"layer_sizes\tstatement"
+			],
+			[
+				"DATA",
+				"DATA_HANDLER_TYPE\tstatement"
+			],
+			[
+				"hac",
+				"HackathonSamplesDataHandler\tclass"
+			],
+			[
+				"dataha",
+				"data_handler_type"
+			],
+			[
+				"sess_",
+				"select_sess_path"
+			],
+			[
+				"Data",
+				"DataFile\tstatement"
+			],
+			[
+				"session",
+				"session_folder\tparam"
+			],
+			[
+				"se",
+				"session_folder"
+			],
+			[
+				"in",
+				"input_data_handler\tparam"
+			],
+			[
+				"Net",
+				"NeuralNetworkUtility\tmodule"
+			],
+			[
+				"lay",
+				"layer_sizes\tstatement"
+			],
+			[
+				"layer_sizes",
+				"layer_sizes"
+			],
+			[
+				"sess_path",
+				"sess_path"
+			],
+			[
+				"Re",
+				"RELU\tstatement"
+			],
+			[
+				"ac",
+				"layer_activation_functions"
+			],
+			[
+				"P",
+				"SESS_PATH\tglobalstmt"
+			],
+			[
+				"activat",
+				"activation_function"
+			],
+			[
+				"acti",
+				"activation_function"
+			],
+			[
+				"A",
+				"ActivationFunction\tclass"
+			],
+			[
+				"bia",
+				"bias_variables\tparam"
+			],
+			[
+				"Neural",
+				"NeuralNetwork\tmodule"
+			],
+			[
+				"ha",
+				"HackathonSamplesDataHandler"
+			],
+			[
+				"SESS",
+				"SESSION_FOLDERS\tstatement"
+			],
+			[
+				"Hac",
+				"HackathonSamplesDataHandler\tclass"
+			],
+			[
+				"D",
+				"DataHandler\tclass"
+			],
+			[
+				"train",
+				"training_file_path\tparam"
+			],
+			[
+				"tra",
+				"training_file_path"
+			],
+			[
+				"training",
+				"training_file_path"
+			],
+			[
+				"Fil",
+				"FileDataHandler\tclass"
+			],
+			[
+				"Dat",
+				"DataHandlers\tmodule"
+			],
+			[
+				"n",
+				"n_outputs"
+			],
+			[
+				"data_h",
+				"data_handler_type\tparam"
+			],
+			[
+				"szi",
+				"size_of_training\tstatement"
+			],
+			[
+				"size",
+				"size_of_training\tstatement"
+			],
+			[
+				"Neu",
+				"NeuralNetwork\tmodule"
+			],
+			[
+				"SES",
+				"SESS_MODEL_PATH\tstatement"
+			],
+			[
+				"SE",
+				"SESS_MODEL_PATH\tstatement"
+			],
+			[
+				"ra",
+				"raw_emg_feature_extraxtion\tfunction"
+			],
+			[
+				"fea",
+				"feature_function_id\tforstmt"
+			],
+			[
+				"emg_",
+				"emg_feature_data\tstatement"
+			],
+			[
+				"emgfe",
+				"emg_feature_data_id\tstatement"
+			],
+			[
+				"wa",
+				"waveform_length\tfunction"
+			],
+			[
+				"M",
+				"mean_absolute_value\tfunction"
+			],
+			[
+				"number",
+				"number_of_reconstructed_signals\tstatement"
+			],
+			[
+				"j",
+				"j\tforstmt"
+			],
+			[
+				"Num",
+				"number_of_coeffcient_subset\tstatement"
+			],
+			[
+				"a",
+				"action\tstatement"
+			],
+			[
+				"sel",
+				"select_action\tfunction"
+			],
+			[
+				"session_",
+				"session_folder_list\tstatement"
+			],
+			[
+				"sesi",
+				"session_folder_list\tstatement"
+			],
+			[
+				"Size",
+				"SIZE_OF_TRAINING_FILE_LIST\tstatement"
+			],
+			[
+				"DAta",
+				"DataUtility\tmodule"
+			],
+			[
+				"Tre",
+				"TRAINING_FILE_LIST\tstatement"
+			],
+			[
+				"DA",
+				"DataUtility\tmodule"
+			],
+			[
+				"SZIE_",
+				"SIZE_OF_TRAINING_FILE_LIST\tstatement"
+			],
+			[
+				"data",
+				"DataUtility\tmodule"
+			],
+			[
+				"SIZE",
+				"SIZE_OF_TRAINING_FILE_LIST\tstatement"
+			],
+			[
+				"size_",
+				"size_of_training_set"
+			],
+			[
+				"Session",
+				"EMG_NEURAL_NETWORK_SESSIONS_FOLDER\tstatement"
+			],
+			[
+				"Emg_se",
+				"EMG_NEURAL_NETWORK_SESSIONS_FOLDER\tstatement"
+			],
+			[
+				"EMG",
+				"EMG_NEURAL_NETWORK_DATA_PATH\tstatement"
+			],
+			[
+				"n_t",
+				"n_steps\tstatement"
+			],
+			[
+				"wr",
+				"write\tfunction"
+			],
+			[
+				"eo",
+				"epoch_count\tparam"
+			],
+			[
+				"me",
+				"metafile\twithstmt"
+			],
+			[
+				"get_met",
+				"get_network_meta_data_from_file2\tfunction"
+			],
+			[
+				"out",
+				"outfile\twithstmt"
+			],
+			[
+				"t",
+				"training_size"
+			],
+			[
+				"ma",
+				"mav_data\tstatement"
+			],
+			[
+				"no",
+				"NormalizeArray\tfunction"
+			],
+			[
+				"local",
+				"local_min\tstatement"
+			],
+			[
+				"glob",
+				"global_min\tstatement"
+			],
+			[
+				"lo",
+				"local_max\tstatement"
+			],
+			[
+				"test",
+				"test_emg_network\tfunction"
+			],
+			[
+				"cre",
+				"create_emg_network\tfunction"
+			],
+			[
+				"mat",
+				"matchObj\tstatement"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/MenuActions.py",
+			"settings":
+			{
+				"buffer_size": 7935,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/NeuralNetworkUtility.py",
+			"settings":
+			{
+				"buffer_size": 23340,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Anaconda Python Builder",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 490.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Disable Package"
+			],
+			[
+				"pac",
+				"Package Control: Enable Package"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"page",
+				"Package Control: Install Package"
+			],
+			[
+				"arm",
+				"Set Syntax: ARM Assembly"
+			]
+		],
+		"width": 549.0
+	},
+	"console":
+	{
+		"height": 162.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/tony0/Development/MyoArmbandPython",
+		"/C/Users/tony0/Development/MyoArmbandPython/data",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples",
+		"/C/Users/tony0/Development/MyoArmbandPython/src"
+	],
+	"file_history":
+	[
+		"/C/Users/tony0/Development/MyoArmbandPython/myo_armband.sublime-project",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/NeuralNetworkUtility.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/MenuActions.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/.sublime-project",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/ResultAnalyses.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/MenuUtility.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/DataUtility.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/NeuralNetwork.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataNeuralNetwork.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/DataHandlers.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/Utility.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-04-18-1525/results/raw_results_2017-04-19-1256.json",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-04-18-1525/results/raw_results.json",
+		"/C/Users/tony0/AppData/Roaming/Sublime Text 3/Packages/User/Terminal.sublime-settings",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/README.md",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-16-1558/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-18-1617/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-21-1133/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-22-1609/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-23-0254/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-25-0400/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-29-1345/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-04-05-1720/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-04-09-2154/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-04-14-1855/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-23-1333/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-24-0244/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-04-18-1442/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-09-1501/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-08-0033/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-07-2225/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-06-1530/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-07-1234/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-07-1450/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-04-18-1431/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-24-0244/training_file.data",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/training_file.data",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/Utility.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/README.md",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-22-1543/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-21-1715/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-21-1610/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/main.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-22-1457/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/training_file.data",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/NeuralNetwork2.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/Constants.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/Settings.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/.gitignore",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/CompareMethods.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/DeviceListener.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-13-0138/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-14-1607/network.meta",
+		"/C/Users/tony0/Development/MyoArmbandPython/.gitignore",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/NeuralNetwork.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/main.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/Utility.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/DataHandler.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/GestureData/.gitignore",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/NeuralNetwork/training_file.data",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/GestureData/Gesture1_Example1.CSV",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/GestureData/Gesture1_Example1 - Copy.CSV",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/foo.csv",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/GestureData/Gesture1_Example6.CSV",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/GestureData/Gesture1_Example5.CSV",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataSamples/GestureData/Gesture1_Example9.CSV",
+		"/C/Users/tony0/AppData/Roaming/Sublime Text 3/Packages/User/Anaconda.sublime-settings",
+		"/C/Users/tony0/AppData/Roaming/Sublime Text 3/Packages/Anaconda/Anaconda.sublime-settings",
+		"/C/Users/tony0/Development/New folder/Gesture Data/Gesture1_Example1.csv",
+		"/C/Users/tony0/Downloads/VanHackathon Challenges/Thalmic Labs - C++ Challenge Data/challenge data/b/intensities.csv",
+		"/C/Users/tony0/.atom/config.cson",
+		"/C/Users/tony0/Downloads/AssetsImportCompleteSample.csv",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/.gitignore",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/compressed_files/test_set/test-eat01.json",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/compressed_files/test_set/test-sleep06.json",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/compressed_files/training_set/eat01.json",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/compressed_files/test_set/test-eat05.json",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/README.me",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/NNdata/xor.data",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/NNdata/xor_float.net",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/NNdata/emg_float.net",
+		"/C/Users/tony0/AppData/Local/Temp/Temp1_dirent-1.21.zip/include/dirent.h",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/opennn_3.0/OpenNN-master/blank/main.cpp",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/opennn_3.0/OpenNN-master/examples/simple_pattern_recognition/main.cpp",
+		"/C/Users/tony0/Downloads/fftw-3.3.5-dll64/fftw3.h",
+		"/C/Users/tony0/Downloads/alglib-3.10.0.cpp.gpl/cpp/src/fasttransforms.h",
+		"/C/Users/tony0/Development/pewter/bin/www",
+		"/C/Users/tony0/Development/pewter/app.js",
+		"/C/Users/tony0/Development/pewter/package.json",
+		"/C/Users/tony0/Downloads/alglib-3.10.0.cpp.gpl/cpp/tests/test_c.cpp",
+		"/C/Users/tony0/Downloads/ex3_code/8",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/menuActions.cpp",
+		"/C/Users/tony0/Downloads/ex3_code/7",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/data/compressed-test-help03.json",
+		"/C/Users/tony0/Downloads/test-styles.tex",
+		"/C/Users/tony0/Downloads/helloworld",
+		"/C/Users/tony0/Downloads/ex3-support-20161010/OSELAS.BSP-EnergyMicro-Gecko/local_src/game-1.0/Makefile",
+		"/C/Users/tony0/Downloads/ex3-support-20161010/OSELAS.BSP-EnergyMicro-Gecko/local_src/driver-gamepad-1.0/driver-gamepad.c",
+		"/C/Users/tony0/Downloads/ex3-support-20161010/OSELAS.BSP-EnergyMicro-Gecko/local_src/driver-gamepad-1.0/Makefile",
+		"/C/Users/tony0/Downloads/ex3-support-20161010/OSELAS.BSP-EnergyMicro-Gecko/local_src/driver-gamepad-1.0/efm32gg.h",
+		"/C/Users/tony0/Downloads/ex3-support-20161010/OSELAS.BSP-EnergyMicro-Gecko/local_src/game-1.0/game.c",
+		"/C/Users/tony0/Downloads/ex3_code/game-1.0/game.c",
+		"/C/Users/tony0/Downloads/ex3_code/driver-gamepad-1.0/driver-gamepad.c",
+		"/C/Users/tony0/AppData/Local/Temp/scp28496/customers/8/9/c/vsait.org/httpd.www/wp-content/themes/vsaitscustom/style.css",
+		"/C/Users/tony0/Downloads/exercise2/interrupt_handlers.c",
+		"/C/Users/tony0/Downloads/ex2-support (1)/ex2-support/Makefile",
+		"/C/Users/tony0/Downloads/ex2-support (1)/ex2-support/efm32gg.h",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/data/compressed-eat01.json",
+		"/C/Users/tony0/Downloads/alglib-3.10.0.cpp.gpl/cpp/src/fasttransforms.cpp",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/data/eat010.json",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/eat04.json",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/data/help02.json",
+		"/C/Users/tony0/Downloads/alglib-3.10.0.cpp.gpl/cpp/src/ap.h",
+		"/C/Users/tony0/Downloads/alglib-3.10.0.cpp.gpl/cpp/src/alglibinternal.h",
+		"/C/Users/tony0/Downloads/write_to_file.m",
+		"/C/Users/tony0/Downloads/ann_1.1.2(1)/include/ANN/ANN.h",
+		"/C/Users/tony0/Downloads/ann_1.1.2(1)/include/ANN/ANNx.h",
+		"/C/Users/tony0/Downloads/ann_1.1.2(1)/include/ANN/ANNperf.h",
+		"/C/Users/tony0/Downloads/ann_1.1.2(1)/sample/query.pts",
+		"/C/Users/tony0/Downloads/ann_1.1.2(1)/sample/data.pts",
+		"/C/Users/tony0/Downloads/ann_1.1.2(1)/src/ANN.cpp",
+		"/C/Users/tony0/Downloads/ann_1.1.2(1)/sample/ann_sample.cpp",
+		"/C/Users/tony0/Downloads/Dll_32/Bin/CorrelationLib.h",
+		"/C/Users/tony0/Downloads/Dll_32/Bin/Constants.h",
+		"/C/Users/tony0/Downloads/CvHMM-1.0-src/CvHMM/main.cpp",
+		"/C/Users/tony0/Development/Visual Studio 2013/Projects/MyoArmbandProject/MyoArmbandProject/data/test.json",
+		"/C/Users/tony0/Downloads/ann_1.1.2(1)/src/perf.cpp"
+	],
+	"find":
+	{
+		"height": 43.0
+	},
+	"find_in_files":
+	{
+		"height": 117.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"print_result",
+			"set_sess_path",
+			"get_network_meta_data",
+			"get_test_file_list",
+			"get_training_file_list",
+			"number_of_gest",
+			"layer_sizes",
+			"MenuUtility.py",
+			"MenuUtility",
+			"result_path",
+			"get_network_meta_data",
+			"data_handler",
+			"sess_model_path",
+			"wavelet",
+			"data_handler",
+			"create_network",
+			"create_net",
+			"feature_functions",
+			"NUMBER_OF_FEATURES",
+			"update_",
+			"self.epoch_count",
+			"get_model_session_path",
+			"gesture_to_string",
+			"Gesture.N",
+			"data_handler_ty",
+			"get_network_meta_data",
+			"create_emg_network_layers",
+			" get_network_meta_data",
+			"create_emg_network_layers",
+			"crea",
+			"get_network_",
+			"layer_activation_functions",
+			")\n",
+			"()\n",
+			"N_OUTPUT_NODES",
+			"size_of_training_set",
+			"get_network_meta_data_from_file",
+			"GESTURE",
+			"cross-correlation",
+			"dimensional",
+			"cross",
+			"main",
+			"fb_copyarea",
+			"cross-correlation",
+			"cross-corr",
+			"ANNcoord",
+			"ANNpoint",
+			"clear"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/MenuActions.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7935,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5971,
+								5971
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": ".",
+									"selector": "source.python - string - comment - constant.numeric"
+								},
+								{
+									"characters": ".",
+									"selector": "source.python - string - constant.numeric"
+								}
+							],
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 2644.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/NeuralNetworkUtility.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 23340,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18231,
+								18243
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": ".",
+									"selector": "source.python - string - comment - constant.numeric"
+								},
+								{
+									"characters": ".",
+									"selector": "source.python - string - constant.numeric"
+								}
+							],
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7562.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 40.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.565693430657,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 157.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 112.0
+	},
+	"pinned_build_system": "",
+	"project": "myo_armband.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 490.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 490.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 275.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

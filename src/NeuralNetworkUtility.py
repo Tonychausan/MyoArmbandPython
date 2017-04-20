@@ -41,11 +41,11 @@ class NeuralNetwork:
         self.data_handler_type = data_handler_type
         self.is_hackathon = is_hackathon
 
-        self.set_sess_path(self.session_folder + os.listdir(self.session_folder)[-1] + "/")
+        self.set_default_sess_path()
         self.get_network_meta_data()
 
     def set_default_sess_path(self):
-        self.set_sess_path(self.session_folder + os.listdir(self.session_folder)[-1] + "/")
+        self.set_sess_path(os.listdir(self.session_folder)[-1])
 
     def change_dataset(self):
         if self.is_hackathon:
@@ -62,8 +62,8 @@ class NeuralNetwork:
     def get_number_of_gesture(self):
         return self.number_of_gestures
 
-    def set_sess_path(self, sess_path):
-        self.sess_path = sess_path
+    def set_sess_path(self, sess_path_id):
+        self.sess_path = self.session_folder + "{}/".format(sess_path_id)
         self.file_path = self.sess_path + "network.meta"
         self.sess_model_path = self.sess_path + "emg_model"
         self.results_folder_path = self.sess_path + "results/"
@@ -102,7 +102,7 @@ class NeuralNetwork:
             return
 
         self.get_network_meta_data()
-        self.set_sess_path(self.session_folder + session_folder_list[int(session_choice)] + "/")
+        self.set_sess_path(session_folder_list[int(session_choice)])
 
     def create_network_meta_data_file(self):
         file_path = self.sess_path + "network.meta"
@@ -263,8 +263,8 @@ class NeuralNetwork:
 
     def create_emg_network(self):
         sess_path_id = time.strftime("%Y-%m-%d-%H%M")
-        new_sess_path = self.session_folder + "{}/".format(sess_path_id)
-        self.set_sess_path(new_sess_path)
+        # new_sess_path = self.session_folder + "{}/".format(sess_path_id)
+        self.set_sess_path(sess_path_id)
 
         if os.path.exists(self.sess_path):
             run = input("A session with this name already exist, replace it? (y/n): ")
@@ -463,7 +463,13 @@ class NeuralNetwork:
             end_time = time.time()
 
             recognized_gesture = numpy.argmax(results)
+
+
+            print()
+            print("###########################################################")
             self.print_results(results)
+            print()
+            print("Recognized:", Gesture.gesture_to_string(np.argmax(results)))
 
             print("Correct gesture:", Gesture.gesture_to_string(test_file.gesture))
             print("Analyse time: ", "%.2f" % float(end_time - start_time))
@@ -522,14 +528,8 @@ class NeuralNetwork:
         return results[0]
 
     def print_results(self, results):
-        # for result in results:
-        print()
-        print("###########################################################")
         for gesture in range(self.get_number_of_gesture()):
-            print('{:15s}\t{:10f}'.format(Gesture.gesture_to_string(gesture), results[gesture]))
-
-        print()
-        print("Recognized:", Gesture.gesture_to_string(np.argmax(results)))
+            print('{}) {:15s}\t{:10f}'.format(gesture, Gesture.gesture_to_string(gesture), results[gesture]))
 
     def write_result_to_file(self, results, file_name, correct_gesture, run_date):
         results_folder_path = self.results_folder_path

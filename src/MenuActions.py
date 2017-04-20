@@ -89,15 +89,6 @@ def remove_all_compressed_files():
 
 
 def neural_network_testing():
-    # use_hackathon_samples = input("Use hackathon samples (1) or press enter: ")
-
-    # is_hackathon = False
-    # if use_hackathon_samples == '1':
-    #     DataFile = HackathonDataNeuralNetwork
-    #     is_hackathon = True
-    # else:
-    #     DataFile = NeuralNetwork
-
     DataFile = HackathonDataNeuralNetwork
     is_hackathon = True
 
@@ -160,39 +151,46 @@ def create_gesture_files():
         while True:
             print()
             print("#################################################################################\n", end="")
-            input("Press Enter to continue...")
-            listener.recording_on()
-            sleep(2.0)
-            while listener.is_recording:
-                pass
+            a = input("Enter 'r' to remove last file, or press enter to continue...")
+            if a == "r":
+                gesture_recorded = Gesture.NUMBER_OF_GESTURES
+            else:
+                listener.recording_on()
+                sleep(2.0)
+                while listener.is_recording:
+                    pass
 
-            folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
+                folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
 
-            network_session = NeuralNetworkUtility.NeuralNetwork(NeuralNetwork.SESSION_FOLDERS, NeuralNetwork.DATA_HANDLER_TYPE, False)
-            network_session.set_sess_path("2017-03-23-1333")
-            network_session.get_network_meta_data()
+                network_session = NeuralNetworkUtility.NeuralNetwork(NeuralNetwork.SESSION_FOLDERS, NeuralNetwork.DATA_HANDLER_TYPE, False)
+                network_session.set_sess_path("2017-03-23-1333")
+                network_session.get_network_meta_data()
 
-            results = network_session.input_test_emg_network(listener.data_handler)
-            recognized_gesture = numpy.argmax(results)
-            network_session.print_results(results)
+                results = network_session.input_test_emg_network(listener.data_handler)
+                recognized_gesture = numpy.argmax(results)
 
-            # Print number to gesture table
-            print()
-            for gesture in range(Gesture.NUMBER_OF_GESTURES):
-                print(gesture, "->", Gesture.gesture_to_string(gesture), "         ", end="")
-            print()
-            print(Gesture.NUMBER_OF_GESTURES, "->", "remove last file...")
-            print(Gesture.NUMBER_OF_GESTURES + 1, "->", "continue...")
+                print()
+                print("###########################################################")
+                print()
+                network_session.print_results(results)
 
-            gesture_recorded = -1
-            while gesture_recorded < 0 or gesture_recorded >= Gesture.NUMBER_OF_GESTURES + 2:
-                gesture_recorded = input("Select an action: ")
-                if gesture_recorded == "":
-                    gesture_recorded = recognized_gesture
-                elif not Utility.is_int_input(gesture_recorded):
-                    gesture_recorded = -1
-                else:
-                    gesture_recorded = int(gesture_recorded)
+                # Print number to gesture table
+                print()
+                print("{})".format(Gesture.NUMBER_OF_GESTURES), "remove last file...")
+                print("{})".format(Gesture.NUMBER_OF_GESTURES + 1), "continue...")
+
+                print()
+                print("Recognized:", Gesture.gesture_to_string(recognized_gesture))
+
+                gesture_recorded = -1
+                while gesture_recorded < 0 or gesture_recorded >= Gesture.NUMBER_OF_GESTURES + 2:
+                    gesture_recorded = input("Correction: ")
+                    if gesture_recorded == "":
+                        gesture_recorded = recognized_gesture
+                    elif not Utility.is_int_input(gesture_recorded):
+                        gesture_recorded = -1
+                    else:
+                        gesture_recorded = int(gesture_recorded)
 
             if(gesture_recorded == Gesture.NUMBER_OF_GESTURES):
                 if last_file is not None:
