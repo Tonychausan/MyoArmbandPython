@@ -6,6 +6,7 @@ from time import sleep
 
 import DataUtility as DataUtility
 from DataUtility import DataSetFormat, DataSetType, Gesture, Sensor
+from MenuUtility import MenuItem, print_menu, is_valid_menu_item
 
 import Constants as Constant
 import Utility as Utility
@@ -15,48 +16,6 @@ import NeuralNetwork
 import DeviceListener
 import HackathonDataNeuralNetwork
 import NeuralNetworkUtility
-
-
-class MenuItem:
-    def __init__(self, menu_text, function):
-        self.menu_text = menu_text
-        self.function = function
-
-
-class MenuList:
-    def __init__(self, menu_name):
-        self.menu_name = menu_name
-        self.menu_item_list = []
-        self.size = 0
-        self.action = -1
-
-    def append_menu_item(self, menu_item):
-        self.menu_item_list.append(menu_item)
-        self.size += 1
-
-    def print_menu(self):
-        os.system('cls')
-        print(self.menu_name)
-        print("###################################################")
-
-        for i in range(self.size):
-            print("{})".format(i), self.menu_item_list[i].menu_text)
-        print()
-
-    def select_action(self):
-        action = -1
-        while action < -1:
-            action = input("Select an action: ")
-            try:
-                action = int(action)
-            except ValueError:
-                print("That's not an int!")
-                action = -1
-                continue
-
-            if action >= self.size:
-                print("Unknown action!")
-        self.action = action
 
 
 def create_main_menu():
@@ -69,39 +28,6 @@ def create_main_menu():
     menu_item_list.append(MenuItem("Create Gesture-files", create_gesture_files))
     menu_item_list.append(MenuItem("Neural Network Menu", neural_network_testing))
     return menu_item_list
-
-
-def print_menu(menu_item_list):
-    for i in range(len(menu_item_list)):
-        print(str(i) + ")", menu_item_list[i].menu_text)
-    print()
-
-    action = is_valid_menu_item(min=0, max=len(menu_item_list))
-    os.system('cls')
-    return action
-
-
-def is_valid_menu_item(min, max, empty_input_allowed=False):
-    action = min - 1
-    while action < min:
-        action = input("Choose an action: ")
-        if empty_input_allowed and action == "":
-            return min - 1
-        try:
-            action = int(action)
-        except ValueError:
-            print("That's not an int!")
-            action = -1
-            continue
-
-        if action >= max:
-            print("That's a high int!")
-            action = min - 1
-        elif action < 0:
-            print("That's a low int!")
-            action = min - 1
-
-        return action
 
 
 def print_myo_data():
@@ -163,21 +89,26 @@ def remove_all_compressed_files():
 
 
 def neural_network_testing():
-    use_hackathon_samples = input("Use hackathon samples (1) or press enter: ")
+    # use_hackathon_samples = input("Use hackathon samples (1) or press enter: ")
 
-    is_hackathon = False
-    if use_hackathon_samples == '1':
-        DataFile = HackathonDataNeuralNetwork
-        is_hackathon = True
-    else:
-        DataFile = NeuralNetwork
+    # is_hackathon = False
+    # if use_hackathon_samples == '1':
+    #     DataFile = HackathonDataNeuralNetwork
+    #     is_hackathon = True
+    # else:
+    #     DataFile = NeuralNetwork
+
+    DataFile = HackathonDataNeuralNetwork
+    is_hackathon = True
 
     network_session = NeuralNetworkUtility.NeuralNetwork(DataFile.SESSION_FOLDERS, DataFile.DATA_HANDLER_TYPE, is_hackathon)
     nn_menu_list = []
+    nn_menu_list.append(MenuItem("Change dataset", network_session.change_dataset))
     nn_menu_list.append(MenuItem("Select a session", network_session.select_sess_path))
     nn_menu_list.append(MenuItem("Create network", network_session.create_emg_network))
     nn_menu_list.append(MenuItem("Train network", network_session.train_emg_network))
     nn_menu_list.append(MenuItem("Test data", network_session.test_emg_network))
+    nn_menu_list.append(MenuItem("Result analyses", network_session.result_analyses))
 
     while True:
         os.system('cls')
@@ -238,6 +169,8 @@ def create_gesture_files():
             folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
 
             network_session = NeuralNetworkUtility.NeuralNetwork(NeuralNetwork.SESSION_FOLDERS, NeuralNetwork.DATA_HANDLER_TYPE, False)
+            network_session.set_sess_path("2017-03-23-1333")
+            network_session.get_network_meta_data()
 
             results = network_session.input_test_emg_network(listener.data_handler)
             recognized_gesture = numpy.argmax(results)

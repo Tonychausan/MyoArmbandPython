@@ -1,7 +1,6 @@
 import tensorflow as tf
 import numpy as np
 import time
-import datetime
 import os
 import numpy
 import json
@@ -10,8 +9,11 @@ import json
 import Utility
 import DataHandlers
 import HackathonDataNeuralNetwork
+import NeuralNetwork as NN
 import DataUtility
-from DataUtility import Sensor, Gesture, DataSetFormat, DataSetType, File
+from DataUtility import Gesture
+import MenuUtility
+import ResultAnalyses
 
 
 # Training Parameters
@@ -25,6 +27,12 @@ class ActivationFunction:
     SOFTMAX = "Softmax"
 
 
+class ResultJsonName:
+    FILENAME = "filename"
+    RESULTS = "results"
+    GESTURE = "gesture"
+
+
 class NeuralNetwork:
     def __init__(self, session_folder, data_handler_type, is_hackathon):
         self.epoch_count = 0
@@ -34,21 +42,31 @@ class NeuralNetwork:
         self.is_hackathon = is_hackathon
 
         self.set_sess_path(self.session_folder + os.listdir(self.session_folder)[-1] + "/")
-        self.set_layer_sizes([])
-        self.set_layer_activation_functions([])
-        self.wavelet_level = 0
-        self.feature_function_check_list = [0, 0, 0]
+        self.get_network_meta_data()
+
+    def set_default_sess_path(self):
+        self.set_sess_path(self.session_folder + os.listdir(self.session_folder)[-1] + "/")
+
+    def change_dataset(self):
+        if self.is_hackathon:
+            self.is_hackathon = False
+            DataFile = NN
+        else:
+            self.is_hackathon = True
+            DataFile = HackathonDataNeuralNetwork
+
+        self.session_folder = DataFile.SESSION_FOLDERS
+        self.data_handler_type = DataFile.DATA_HANDLER_TYPE
+        self.set_default_sess_path()
 
     def get_number_of_gesture(self):
-        if self.is_hackathon:
-            return HackathonDataNeuralNetwork.NUMBER_OF_GESTURES
-        else:
-            return Gesture.NUMBER_OF_GESTURES
+        return self.number_of_gestures
 
     def set_sess_path(self, sess_path):
         self.sess_path = sess_path
         self.file_path = self.sess_path + "network.meta"
         self.sess_model_path = self.sess_path + "emg_model"
+        self.results_folder_path = self.sess_path + "results/"
 
     def set_layer_sizes(self, layer_sizes):
         self.layer_sizes = layer_sizes
@@ -59,9 +77,11 @@ class NeuralNetwork:
     def print_sess_info(self, session_path):
         meta_data_path = session_path + "/" + "network.meta"
         with open(meta_data_path, 'r') as metafile:
-            print("{:20s}".format("Number of gestures:"), metafile.readline().split()[1:][-1])
-            metafile.readline()  # epoch count
-            metafile.readline()  # layer functions
+            layer_sizes = metafile.readline().split()[1:]
+            print("{:20s}".format("Number of gestures:"), layer_sizes[-1])
+            print("{:20s}".format("Layer sizes:"), layer_sizes)
+            print("{:20s}".format("Epoch count:"), int(metafile.readline().split(" ")[1]))
+            print("{:20s}".format("Activations:"), metafile.readline().split()[1:])  # layer_activation_functions
             print("{:20s}".format("Wavelet level:"), int(metafile.readline().split(" ")[1]))
             print("{:20s}".format("[MAV, RMS, WL]:"), [int(x) for x in metafile.readline().split()[1:]])
 
@@ -81,6 +101,7 @@ class NeuralNetwork:
         if session_choice >= len(session_folder_list) or session_choice < 0:
             return
 
+        self.get_network_meta_data()
         self.set_sess_path(self.session_folder + session_folder_list[int(session_choice)] + "/")
 
     def create_network_meta_data_file(self):
@@ -108,6 +129,7 @@ class NeuralNetwork:
     def get_network_meta_data(self):
         with open(self.file_path, 'r') as metafile:
             self.set_layer_sizes([int(x) for x in metafile.readline().split()[1:]])
+            self.number_of_gestures = self.layer_sizes[-1]
             self.epoch_count = int(metafile.readline().split(" ")[1])
             self.set_layer_activation_functions(metafile.readline().split()[1:])
 
@@ -196,10 +218,7 @@ class NeuralNetwork:
         data_handler.set_feature_functions_list(self.feature_function_check_list)
         n_input_nodes = len(data_handler.get_emg_data_features())
 
-        if self.is_hackathon:
-            n_output_nodes = HackathonDataNeuralNetwork.NUMBER_OF_GESTURES
-        else:
-            n_output_nodes = Gesture.NUMBER_OF_GESTURES
+        n_output_nodes = self.get_number_of_gesture()
         size_of_training = len(file_list)
 
         with open(training_file_path, 'w') as outfile:
@@ -259,10 +278,15 @@ class NeuralNetwork:
         print("\nCreate EMG-training file")
         training_file_path = self.sess_path + "training_file.data"
 
+        number_of_gestures = self.get_number_of_gesture()
         if not self.is_hackathon:
             file_list = DataUtility.TRAINING_FILE_LIST
         else:
-            file_list = HackathonDataNeuralNetwork.get_training_file_list()
+            file_list = HackathonDataNeuralNetwork.get_training_file_list(number_of_gestures)
+
+        number_of_gestures = input("Number of gestures: ")
+        if Utility.is_int_input(number_of_gestures):
+            self.number_of_gestures = int(number_of_gestures)
 
         wavelet_level = input("Use Wavelet Level: ")
         if Utility.is_int_input(wavelet_level):
@@ -317,6 +341,7 @@ class NeuralNetwork:
 
         print("\nCreate meta-data file")
         self.create_network_meta_data_file()  # Write meta data of session to file
+        self.print_sess_info()
 
         input("\nPress Enter to continue...")
 
@@ -420,10 +445,13 @@ class NeuralNetwork:
         print("Session path:", self.sess_path)
         summary_list = []
 
+        run_date = time.strftime("%Y-%m-%d-%H%M")
+
+        number_of_gestures = self.get_number_of_gesture()
         if not self.is_hackathon:
-            file_list = DataUtility.TRAINING_FILE_LIST
+            file_list = DataUtility.TEST_FILE_LIST
         else:
-            file_list = HackathonDataNeuralNetwork.get_test_file_list()
+            file_list = HackathonDataNeuralNetwork.get_test_file_list(number_of_gestures)
 
         for test_file in file_list:
             data_handler = self.data_handler_type(test_file)
@@ -445,21 +473,19 @@ class NeuralNetwork:
             print()
             print("File:", test_file.filename)
 
+            self.write_result_to_file(results, test_file.filename, test_file.gesture, run_date)
+
         print("#############################################################")
         print("Session path:", self.sess_path)
         print("Summary List")
 
-        if self.is_hackathon:
-            number_of_gestures = HackathonDataNeuralNetwork.NUMBER_OF_GESTURES
-        else:
-            number_of_gestures = Gesture.NUMBER_OF_GESTURES
+        number_of_gestures = self.get_number_of_gesture()
 
         success_list = []
         for i in range(number_of_gestures):
             success_list.append([0, 0])
 
         for correct_gesture, recognized_gesture in summary_list:
-
             success_list[correct_gesture][0] += 1
 
             if correct_gesture == recognized_gesture:
@@ -471,7 +497,8 @@ class NeuralNetwork:
         print("#############################################################")
         print("Success Rate")
         for i in range(number_of_gestures):
-            print('{:15s}\t{:4d} of {:4d} -> {:.2f}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0], 100 * success_list[i][1] / success_list[i][0]))
+            if success_list[i][0] != 0:
+                print('{:15s}\t{:4d} of {:4d} -> {:.2f}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0], 100 * success_list[i][1] / success_list[i][0]))
 
         input("Press Enter to continue...")
 
@@ -492,18 +519,76 @@ class NeuralNetwork:
             results = sess.run(output, feed_dict={input_placeholder: test_inputs})
 
         tf.reset_default_graph()
-        return results
+        return results[0]
 
     def print_results(self, results):
-        for result in results:
-            print()
-            print("###########################################################")
-            for gesture in range(self.get_number_of_gesture()):
-                print('{:15s}\t{:10f}'.format(Gesture.gesture_to_string(gesture), result[gesture]))
+        # for result in results:
+        print()
+        print("###########################################################")
+        for gesture in range(self.get_number_of_gesture()):
+            print('{:15s}\t{:10f}'.format(Gesture.gesture_to_string(gesture), results[gesture]))
 
         print()
         print("Recognized:", Gesture.gesture_to_string(np.argmax(results)))
 
-    def write_result_to_file(self, results):
-        for result in results:
+    def write_result_to_file(self, results, file_name, correct_gesture, run_date):
+        results_folder_path = self.results_folder_path
+        json_file_path = results_folder_path + "raw_results_{}.json".format(run_date)
 
+        if not os.path.exists(results_folder_path):
+            os.makedirs(results_folder_path)
+
+        if os.path.isfile(json_file_path):
+            with open(json_file_path) as json_file:
+                json_data = json.load(json_file)
+        else:
+            json_data = json.loads('[]')
+
+        list_results = []
+        list_results = results.tolist()
+
+        json_object_result = '{{ "filename" : "{}", "gesture" : {}, "results" : {} }}'.format(file_name, correct_gesture, list_results)
+        json_data.append(json.loads(json_object_result))
+
+        with open(json_file_path, 'w') as outfile:
+            json.dump(json_data, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+
+    def result_analyses(self):
+        if not os.path.exists(self.results_folder_path):
+            print("No results found!")
+            input("Press enter to continue...")
+            return
+
+        result_file_list = os.listdir(self.results_folder_path)
+        if len(result_file_list) == 0:
+            print("No results found!")
+            input("Press enter to continue...")
+            return
+
+        result_file_path = self.results_folder_path + result_file_list[-1]
+        if len(result_file_list) > 1:
+            for i in range(len(result_file_list)):
+                print("{})".format(i), result_file_list[i])
+            result_choice = input("Select a result file to use: ")
+            try:
+                if not (result_choice >= len(result_file_list) or result_choice < 0):
+                    result_choice = int(result_choice)
+                    result_file_path = self.results_folder_path + result_file_list[result_choice]
+            except ValueError:
+                pass
+
+        print("Result file: {}".format(result_file_path))
+        with open(result_file_path) as json_file:
+            json_result_data = json.load(json_file)
+
+        analyse_menu = [
+            MenuUtility.MenuItem("Raw success list", ResultAnalyses.raw_success_list),
+            MenuUtility.MenuItem("Filtered analyse", ResultAnalyses.filtered_analyse)
+        ]
+
+        print("Analyses menu")
+        print("####################################################")
+        action = MenuUtility.print_menu(analyse_menu)
+        analyse_menu[action].function(self.get_number_of_gesture(), json_result_data)
+
+        input("Press enter to continue...")

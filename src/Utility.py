@@ -140,6 +140,7 @@ def is_int_input(i):
 
     return True
 
+
 def is_float_input(i):
     try:
         i = float(i)

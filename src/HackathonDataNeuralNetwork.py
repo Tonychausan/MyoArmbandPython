@@ -36,7 +36,7 @@ class HackathonSamplesDataHandler(DataHandlers.DataHandler):
 DATA_HANDLER_TYPE = HackathonSamplesDataHandler
 
 
-def get_training_file_list():
+def get_training_file_list(number_of_gestures):
     file_list = []
     folder = FOLDER_NAME
     for filename in os.listdir(folder):
@@ -45,13 +45,13 @@ def get_training_file_list():
 
         file = File(filename, folder)
 
-        if file.example_id <= 1500 and file.gesture < NUMBER_OF_GESTURES:
+        if file.example_id <= 1500 and file.gesture < number_of_gestures:
             file_list.append(file)
 
     return file_list
 
 
-def get_test_file_list():
+def get_test_file_list(number_of_gestures):
     file_list = []
     folder = FOLDER_NAME
     for filename in os.listdir(folder):
@@ -60,7 +60,7 @@ def get_test_file_list():
 
         file = File(filename, folder)
 
-        if file.example_id > 1500 and file.gesture < NUMBER_OF_GESTURES:
+        if file.example_id > 1500 and file.gesture < number_of_gestures:
             file_list.append(file)
 
     return file_list
