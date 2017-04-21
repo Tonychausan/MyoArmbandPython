@@ -1,6 +1,6 @@
 import myo as libmyo
 import os
-import json
+import time
 import numpy
 from time import sleep
 
@@ -123,13 +123,28 @@ def live_gesture_recognition():
 
     try:
         while True:
+            print("#################################################################################\n", end="")
             print()
-            input("\nPress Enter to continue...")
+            try:
+                input("press enter to continue... ")
+            except EOFError:
+                time.sleep(1)
+
             listener.recording_on()
             while listener.is_recording:
                 pass
-            results = NeuralNetwork.input_test_emg_network(listener.data_handler)
-            NeuralNetwork.print_results(results)
+
+            print()
+            network_session = NeuralNetworkUtility.NeuralNetwork(NeuralNetwork.SESSION_FOLDERS, NeuralNetwork.DATA_HANDLER_TYPE, False)
+            network_session.set_sess_path("2017-04-20-1454")
+            network_session.get_network_meta_data()
+
+            results = network_session.input_test_emg_network(listener.data_handler)
+            network_session.print_results(results)
+
+            recognized_gesture = numpy.argmax(results)
+            print()
+            print("Recognized:", Gesture.gesture_to_string(recognized_gesture))
 
     except KeyboardInterrupt:
         print('\nQuit')
@@ -151,7 +166,10 @@ def create_gesture_files():
         while True:
             print()
             print("#################################################################################\n", end="")
-            a = input("Enter 'r' to remove last file, or press enter to continue...")
+            try:
+                a = input("Enter 'r' to remove last file, or press enter to continue... ")
+            except EOFError:
+                time.sleep(1)
             if a == "r":
                 gesture_recorded = Gesture.NUMBER_OF_GESTURES
             else:
@@ -163,7 +181,7 @@ def create_gesture_files():
                 folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
 
                 network_session = NeuralNetworkUtility.NeuralNetwork(NeuralNetwork.SESSION_FOLDERS, NeuralNetwork.DATA_HANDLER_TYPE, False)
-                network_session.set_sess_path("2017-03-23-1333")
+                network_session.set_sess_path("2017-04-20-1454")
                 network_session.get_network_meta_data()
 
                 results = network_session.input_test_emg_network(listener.data_handler)

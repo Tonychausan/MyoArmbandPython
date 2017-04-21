@@ -443,6 +443,12 @@ class NeuralNetwork:
     def test_emg_network(self):
         self.get_network_meta_data()
         print("Session path:", self.sess_path)
+
+        is_storeing_result = input("Write result to file (y/n)? ")
+        if is_storeing_result == 'y':
+            is_storeing_result = True
+        else:
+            is_storeing_result = False
         summary_list = []
 
         run_date = time.strftime("%Y-%m-%d-%H%M")
@@ -464,7 +470,6 @@ class NeuralNetwork:
 
             recognized_gesture = numpy.argmax(results)
 
-
             print()
             print("###########################################################")
             self.print_results(results)
@@ -478,8 +483,8 @@ class NeuralNetwork:
 
             print()
             print("File:", test_file.filename)
-
-            self.write_result_to_file(results, test_file.filename, test_file.gesture, run_date)
+            if is_storeing_result:
+                self.write_result_to_file(results, test_file.filename, test_file.gesture, run_date)
 
         print("#############################################################")
         print("Session path:", self.sess_path)

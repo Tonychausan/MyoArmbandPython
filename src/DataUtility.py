@@ -135,8 +135,8 @@ def get_gesture_file_count_in_folder(folder_path):
 
 
 TRAINING_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TRAINING))
-TEST_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TEST))
-# TEST_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.RECORDED))
+# TEST_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TEST))
+TEST_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.RECORDED))
 TRAINING_FILE_LIST.extend(generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.RECORDED)))
 # TRAINING_FILE_LIST.extend(TEST_FILE_LIST)
 
