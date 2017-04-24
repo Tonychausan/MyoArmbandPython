@@ -341,7 +341,7 @@ class NeuralNetwork:
 
         print("\nCreate meta-data file")
         self.create_network_meta_data_file()  # Write meta data of session to file
-        self.print_sess_info()
+        self.print_sess_info(self.sess_path)
 
         input("\nPress Enter to continue...")
 
