@@ -101,8 +101,8 @@ class NeuralNetwork:
         if session_choice >= len(session_folder_list) or session_choice < 0:
             return
 
-        self.get_network_meta_data()
         self.set_sess_path(session_folder_list[int(session_choice)])
+        self.get_network_meta_data()
 
     def create_network_meta_data_file(self):
         file_path = self.sess_path + "network.meta"
