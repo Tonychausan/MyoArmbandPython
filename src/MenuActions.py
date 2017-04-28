@@ -3,6 +3,7 @@ import os
 import time
 import numpy
 from time import sleep
+import winsound
 
 import DataUtility as DataUtility
 from DataUtility import DataSetFormat, DataSetType, Gesture, Sensor
@@ -199,6 +200,10 @@ def create_gesture_files():
 
                 print()
                 print("Recognized:", Gesture.gesture_to_string(recognized_gesture))
+
+                Freq = 1500  # Set Frequency To 2500 Hertz
+                Dur = 500  # Set Duration To 1000 ms == 1 second
+                winsound.Beep(Freq, Dur)
 
                 gesture_recorded = -1
                 while gesture_recorded < 0 or gesture_recorded >= Gesture.NUMBER_OF_GESTURES + 2:
