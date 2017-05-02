@@ -115,6 +115,9 @@ def get_gesture_from_filename(filename):
 def generate_file_list(data_folder_path):
     filelist = []
     for filename in os.listdir(data_folder_path):
+        if filename == ".gitignore":
+            continue
+
         gesture = get_gesture_from_filename(filename)
         if "recorded" in filename.lower():
             filelist.append(File(data_folder_path, filename, gesture))
