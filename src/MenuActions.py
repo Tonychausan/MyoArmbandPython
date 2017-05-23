@@ -19,6 +19,9 @@ import HackathonDataNeuralNetwork
 import NeuralNetworkUtility
 
 
+default_session = "2017-05-02-1906"
+
+
 def create_main_menu():
     menu_item_list = []
     menu_item_list.append(MenuItem("Try gestures", live_gesture_recognition))
@@ -27,6 +30,7 @@ def create_main_menu():
     menu_item_list.append(MenuItem("Delete all compressed files", remove_all_compressed_files))
     menu_item_list.append(MenuItem("Pre-data gesture test", compare_prerecorded_files))
     menu_item_list.append(MenuItem("Create Gesture-files", create_gesture_files))
+    menu_item_list.append(MenuItem("Create Gesture-files for not me!", create_gesture_files_for_notme))
     menu_item_list.append(MenuItem("Neural Network Menu", neural_network_testing))
     return menu_item_list
 
@@ -137,7 +141,7 @@ def live_gesture_recognition():
 
             print()
             network_session = NeuralNetworkUtility.NeuralNetwork(NeuralNetwork.SESSION_FOLDERS, NeuralNetwork.DATA_HANDLER_TYPE, False)
-            network_session.set_sess_path("2017-04-20-1454")
+            network_session.set_sess_path(default_session)
             network_session.get_network_meta_data()
 
             results = network_session.input_test_emg_network(listener.data_handler)
@@ -182,7 +186,7 @@ def create_gesture_files():
                 folder_path = DataUtility.get_data_set_path(DataSetFormat.RAW, DataSetType.RECORDED)
 
                 network_session = NeuralNetworkUtility.NeuralNetwork(NeuralNetwork.SESSION_FOLDERS, NeuralNetwork.DATA_HANDLER_TYPE, False)
-                network_session.set_sess_path("2017-04-20-1454")
+                network_session.set_sess_path(default_session)
                 network_session.get_network_meta_data()
 
                 results = network_session.input_test_emg_network(listener.data_handler)
@@ -236,3 +240,92 @@ def create_gesture_files():
         print('\nQuit')
 
     hub.shutdown()  # !! crucial
+
+
+def create_gesture_files_for_notme():
+    libmyo.init('../myo-sdk-win-0.9.0/bin')
+    listener = DeviceListener.LiveGestureListener()
+    listener.expand_data_length(time_margin=1.5)
+    hub = libmyo.Hub()
+    hub.run(2000, listener)
+
+    print("Create record data set")
+
+    last_file = None
+    try:
+        person_id = input("Person ID-number: ")
+        while True:
+            print()
+            print("#################################################################################\n", end="")
+
+            try:
+                a = input("Enter 'r' to remove last file, or press enter to continue... ")
+            except EOFError:
+                time.sleep(1)
+            if a == "r":
+                gesture_recorded = Gesture.NUMBER_OF_GESTURES
+            else:
+                listener.recording_on()
+                sleep(2.0)
+                while listener.is_recording:
+                    pass
+
+                folder_path = "../data/raw_files/notme_set/"
+
+                network_session = NeuralNetworkUtility.NeuralNetwork(NeuralNetwork.SESSION_FOLDERS, NeuralNetwork.DATA_HANDLER_TYPE, False)
+                network_session.set_sess_path(default_session)
+                network_session.get_network_meta_data()
+
+                results = network_session.input_test_emg_network(listener.data_handler)
+                recognized_gesture = numpy.argmax(results)
+
+                print()
+                print("###########################################################")
+                print()
+                network_session.print_results(results)
+
+                # Print number to gesture table
+                print()
+                print("{})".format(Gesture.NUMBER_OF_GESTURES), "remove last file...")
+                print("{})".format(Gesture.NUMBER_OF_GESTURES + 1), "continue...")
+
+                print()
+                print("Recognized:", Gesture.gesture_to_string(recognized_gesture))
+
+                Freq = 1500  # Set Frequency To 2500 Hertz
+                Dur = 500  # Set Duration To 1000 ms == 1 second
+                winsound.Beep(Freq, Dur)
+
+                gesture_recorded = -1
+                while gesture_recorded < 0 or gesture_recorded >= Gesture.NUMBER_OF_GESTURES + 2:
+                    gesture_recorded = input("Correction: ")
+                    if gesture_recorded == "":
+                        gesture_recorded = recognized_gesture
+                    elif not Utility.is_int_input(gesture_recorded):
+                        gesture_recorded = -1
+                    else:
+                        gesture_recorded = int(gesture_recorded)
+
+            if(gesture_recorded == Gesture.NUMBER_OF_GESTURES):
+                if last_file is not None:
+                    os.remove(last_file.get_file_path())
+                    print("Removed file:", last_file.filename)
+                    last_file = None
+                else:
+                    print("No last file, remove it manually")
+                continue
+            if(gesture_recorded == Gesture.NUMBER_OF_GESTURES + 1):
+                continue
+
+            gesture_file_count_list = DataUtility.get_gesture_file_count_in_folder(folder_path)
+            file_number = gesture_file_count_list[gesture_recorded]
+
+            filename = person_id + "-NotMe-" + Gesture.gesture_to_string(gesture_recorded) + "-" + str(file_number) + ".json"
+
+            last_file = listener.data_handler.create_json_file2(filename, folder_path)
+
+    except KeyboardInterrupt:
+        print('\nQuit')
+
+    hub.shutdown()  # !! crucial
+

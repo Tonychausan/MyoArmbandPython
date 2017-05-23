@@ -514,6 +514,8 @@ class NeuralNetwork:
         input("Press Enter to continue...")
 
     def input_test_emg_network(self, input_data_handler):
+        input_data_handler.set_emg_wavelet_level(self.wavelet_level)
+        input_data_handler.set_feature_functions_list(self.feature_function_check_list)
         test_inputs = [input_data_handler.get_emg_data_features()]
         self.get_network_meta_data()
 

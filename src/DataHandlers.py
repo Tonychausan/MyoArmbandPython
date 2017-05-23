@@ -258,6 +258,24 @@ class InputDataHandler(DataHandler):
 
         return o_file
 
+    def create_json_file2(self, filename, folder_path):
+        print("Creating file:", filename)
+
+        json_data = {}
+        for sensor in range(Sensor.NUMBER_OF_SENSORS):
+            json_array_name = Utility.get_json_array_name_for_sensor(sensor)
+            json_data_table_name = Constant.JSON_ARRAY_DATA_TABLE_NAME
+
+            json_data[json_array_name] = {}
+            json_data[json_array_name][json_data_table_name] = self.get_sensor_data(sensor)
+
+        with open(folder_path + filename, 'w') as outfile:
+            json.dump(json_data, outfile)
+
+        o_file = DataUtility.File(folder_path, filename, None)
+
+        return o_file
+
 
 class FileDataHandler(DataHandler):
     def __init__(self, file_data):
