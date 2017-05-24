@@ -106,7 +106,8 @@ def get_data_set_path(data_format, data_type):
 def get_gesture_from_filename(filename):
     gesture = 0
     for gesture_name in Gesture.GESTURE_NAMES[:-1]:
-        if gesture_name.lower() in filename.lower():
+        # if gesture_name.lower() in filename.lower():
+        if gesture_name in filename:
             return gesture
 
         gesture = gesture + 1
@@ -135,6 +136,7 @@ def get_gesture_file_count_in_folder(folder_path):
         gesture_file_counts[f.gesture] += 1
 
     return gesture_file_counts
+
 
 
 TRAINING_FILE_LIST = generate_file_list(get_data_set_path(DataSetFormat.COMPRESSED, DataSetType.TRAINING))

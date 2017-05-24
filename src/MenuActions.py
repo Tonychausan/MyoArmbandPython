@@ -131,7 +131,7 @@ def live_gesture_recognition():
             print("#################################################################################\n", end="")
             print()
             try:
-                input("press enter to continue... ")
+                input("press enter to continue...")
             except EOFError:
                 time.sleep(1)
 
