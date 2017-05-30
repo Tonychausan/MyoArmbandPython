@@ -278,15 +278,15 @@ class NeuralNetwork:
         print("\nCreate EMG-training file")
         training_file_path = self.sess_path + "training_file.data"
 
+        number_of_gestures = input("Number of gestures: ")
+        if Utility.is_int_input(number_of_gestures):
+            self.number_of_gestures = int(number_of_gestures)
+
         number_of_gestures = self.get_number_of_gesture()
         if not self.is_hackathon:
             file_list = DataUtility.TRAINING_FILE_LIST
         else:
             file_list = HackathonDataNeuralNetwork.get_training_file_list(number_of_gestures)
-
-        number_of_gestures = input("Number of gestures: ")
-        if Utility.is_int_input(number_of_gestures):
-            self.number_of_gestures = int(number_of_gestures)
 
         wavelet_level = input("Use Wavelet Level: ")
         if Utility.is_int_input(wavelet_level):
