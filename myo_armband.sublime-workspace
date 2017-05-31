@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"suc",
+				"success_list\tstatement"
+			],
+			[
+				"gr",
+				"graph_def\tfunction"
+			],
+			[
+				"log",
+				"log_folder_path\tstatement"
+			],
+			[
+				"sum",
+				"Summary"
+			],
+			[
+				"gest",
+				"gesture_file_counts\tstatement"
+			],
+			[
+				"cre",
+				"create_gesture_files_for_notme\tfunction"
+			],
+			[
 				"print",
 				"print_sess_info\tfunction"
 			],
@@ -76,16 +100,8 @@
 				"input_text\tparam"
 			],
 			[
-				"suc",
-				"Success"
-			],
-			[
 				"re",
 				"recognized_gesture\tstatement"
-			],
-			[
-				"gest",
-				"gesture_to_string\tfunction"
 			],
 			[
 				"result",
@@ -498,76 +514,34 @@
 			[
 				"glob",
 				"global_min\tstatement"
-			],
-			[
-				"lo",
-				"local_max\tstatement"
-			],
-			[
-				"test",
-				"test_emg_network\tfunction"
-			],
-			[
-				"cre",
-				"create_emg_network\tfunction"
-			],
-			[
-				"mat",
-				"matchObj\tstatement"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "src/NeuralNetwork.py",
-			"settings":
-			{
-				"buffer_size": 330,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "src/NeuralNetworkUtility.py",
 			"settings":
 			{
-				"buffer_size": 23588,
+				"buffer_size": 23918,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "src/main.py",
+			"file": "data/nn_data/emg_network/sessions/2017-03-23-1333/log/log_test/events.out.tfevents.1496152462.DESKTOP-RKPHEUK",
 			"settings":
 			{
-				"buffer_size": 328,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
+				"buffer_size": 37705,
+				"encoding": "Hexadecimal",
+				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/MenuActions.py",
+			"file": "src/ResultAnalyses.py",
 			"settings":
 			{
-				"buffer_size": 8822,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/Utility.py",
-			"settings":
-			{
-				"buffer_size": 5376,
-				"encoding": "UTF-8",
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src/DataUtility.py",
-			"settings":
-			{
-				"buffer_size": 3886,
+				"buffer_size": 4702,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -664,25 +638,35 @@
 	[
 		"/C/Users/tony0/Development/MyoArmbandPython",
 		"/C/Users/tony0/Development/MyoArmbandPython/data",
-		"/C/Users/tony0/Development/MyoArmbandPython/data/compressed_files",
-		"/C/Users/tony0/Development/MyoArmbandPython/data/raw_files",
-		"/C/Users/tony0/Development/MyoArmbandPython/src"
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-23-1333",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-05-09-0122",
+		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples",
+		"/C/Users/tony0/Development/MyoArmbandPython/src",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/__pycache__"
 	],
 	"file_history":
 	[
+		"/C/Users/tony0/Development/MyoArmbandPython/src/MenuActions.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/CompareMethods.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/Constants.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/DataUtility.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/DataHandlers.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/NeuralNetwork.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/Utility.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/main.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/src/NeuralNetworkUtility.py",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/raw_files/notme_set/2-NotMe-EAT-2.json",
+		"/C/Users/tony0/Development/MyoArmbandPython/data/raw_files/notme_set/1-NotMe-WHY-0.json",
 		"/C/Users/tony0/Development/MyoArmbandPython/data/.gitignore",
 		"/C/Users/tony0/Development/MyoArmbandPython/data/raw_files/recorded_set/recorded-DRINK-1.json",
-		"/C/Users/tony0/Development/MyoArmbandPython/src/DataUtility.py",
-		"/C/Users/tony0/Development/MyoArmbandPython/src/MenuActions.py",
-		"/C/Users/tony0/Development/MyoArmbandPython/src/NeuralNetworkUtility.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/myo_armband.sublime-project",
 		"/C/Users/tony0/Development/MyoArmbandPython/.sublime-project",
 		"/C/Users/tony0/Development/MyoArmbandPython/src/ResultAnalyses.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/src/MenuUtility.py",
-		"/C/Users/tony0/Development/MyoArmbandPython/src/NeuralNetwork.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/src/HackathonDataNeuralNetwork.py",
-		"/C/Users/tony0/Development/MyoArmbandPython/src/DataHandlers.py",
-		"/C/Users/tony0/Development/MyoArmbandPython/src/Utility.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-04-18-1525/results/raw_results_2017-04-19-1256.json",
 		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-04-18-1525/results/raw_results.json",
 		"/C/Users/tony0/AppData/Roaming/Sublime Text 3/Packages/User/Terminal.sublime-settings",
@@ -714,15 +698,12 @@
 		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-22-1543/network.meta",
 		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-21-1715/network.meta",
 		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-21-1610/network.meta",
-		"/C/Users/tony0/Development/MyoArmbandPython/src/main.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-22-1457/network.meta",
 		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/training_file.data",
 		"/C/Users/tony0/Development/MyoArmbandPython/src/NeuralNetwork2.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork.py",
-		"/C/Users/tony0/Development/MyoArmbandPython/src/Constants.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/src/Settings.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/.gitignore",
-		"/C/Users/tony0/Development/MyoArmbandPython/src/CompareMethods.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/src/DeviceListener.py",
 		"/C/Users/tony0/Development/MyoArmbandPython/data/nn_data/emg_network/sessions/2017-03-13-0138/network.meta",
 		"/C/Users/tony0/Development/MyoArmbandPython/HackathonDataSamples/NeuralNetwork/Sessions/2017-03-14-1607/network.meta",
@@ -795,9 +776,7 @@
 		"/C/Users/tony0/Downloads/ann_1.1.2(1)/sample/data.pts",
 		"/C/Users/tony0/Downloads/ann_1.1.2(1)/src/ANN.cpp",
 		"/C/Users/tony0/Downloads/ann_1.1.2(1)/sample/ann_sample.cpp",
-		"/C/Users/tony0/Downloads/Dll_32/Bin/CorrelationLib.h",
-		"/C/Users/tony0/Downloads/Dll_32/Bin/Constants.h",
-		"/C/Users/tony0/Downloads/CvHMM-1.0-src/CvHMM/main.cpp"
+		"/C/Users/tony0/Downloads/Dll_32/Bin/CorrelationLib.h"
 	],
 	"find":
 	{
@@ -815,6 +794,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"create_json_file",
+			"dataHandler",
 			"print_sess_info",
 			"create_network_meta_data_file",
 			"print_result",
@@ -882,52 +863,24 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/NeuralNetwork.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 330,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								330,
-								330
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "src/NeuralNetworkUtility.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 23588,
+						"buffer_size": 23918,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13932,
-								13932
+								1257,
+								1257
 							]
 						],
 						"settings":
@@ -941,162 +894,86 @@
 								{
 									"characters": ".",
 									"selector": "source.python - string - constant.numeric"
-								},
-								{
-									"characters": ".",
-									"selector": "source.python - string - constant.numeric"
 								}
 							],
 							"syntax": "Packages/Python/Python.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 8748.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "data/nn_data/emg_network/sessions/2017-03-23-1333/log/log_test/events.out.tfevents.1496152462.DESKTOP-RKPHEUK",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 37705,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "src/main.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 328,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								328,
-								328
-							]
-						],
-						"settings":
-						{
-							"auto_complete_triggers":
-							[
-								{
-									"characters": ".",
-									"selector": "source.python - string - comment - constant.numeric"
-								},
-								{
-									"characters": ".",
-									"selector": "source.python - string - constant.numeric"
-								}
-							],
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "src/MenuActions.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8822,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								7842,
-								7842
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 3240.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "src/Utility.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5376,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4043,
-								4043
-							]
-						],
-						"settings":
-						{
-							"auto_complete_triggers":
-							[
-								{
-									"characters": ".",
-									"selector": "source.python - string - comment - constant.numeric"
-								},
-								{
-									"characters": ".",
-									"selector": "source.python - string - constant.numeric"
-								}
-							],
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1637.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
-					"file": "src/DataUtility.py",
+					"buffer": 2,
+					"file": "src/ResultAnalyses.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3886,
+						"buffer_size": 4702,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2470,
-								2470
+								1528,
+								1528
 							]
 						],
 						"settings":
 						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": ".",
+									"selector": "source.python - string - comment - constant.numeric"
+								},
+								{
+									"characters": ".",
+									"selector": "source.python - string - constant.numeric"
+								}
+							],
 							"syntax": "Packages/Python/Python.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1998.0,
+						"translation.y": 432.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -1135,7 +1012,7 @@
 		"cols":
 		[
 			0.0,
-			0.697514833917,
+			0.664205124491,
 			1.0
 		],
 		"rows":

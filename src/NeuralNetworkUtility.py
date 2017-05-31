@@ -67,6 +67,12 @@ class NeuralNetwork:
         self.file_path = self.sess_path + "network.meta"
         self.sess_model_path = self.sess_path + "emg_model"
         self.results_folder_path = self.sess_path + "results/"
+        self.log_folder_path = self.sess_path + "log/"
+
+        try:
+            self.get_network_meta_data()
+        except OSError as e:
+            pass
 
     def set_layer_sizes(self, layer_sizes):
         self.layer_sizes = layer_sizes
@@ -327,6 +333,7 @@ class NeuralNetwork:
 
         init = tf.global_variables_initializer()
         sess = tf.Session()
+        tf.summary.FileWriter(self.log_folder_path + "log_test", sess.graph)
         sess.run(init)
 
         saver = tf.train.Saver()
@@ -526,7 +533,7 @@ class NeuralNetwork:
         saver = tf.train.Saver()
         with tf.Session() as sess:
             saver.restore(sess, self.sess_model_path)
-
+            # tf.summary.FileWriter(self.log_folder_path + "log_test", sess.graph)
             output = self.create_emg_network_layers(input_placeholder, theta, bias)[1]
 
             results = sess.run(output, feed_dict={input_placeholder: test_inputs})
