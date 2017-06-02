@@ -27,6 +27,15 @@ class ActivationFunction:
     SOFTMAX = "Softmax"
 
 
+def get_activation_function_by_id(id):
+    if id == 0:
+        return ActivationFunction.SIGMOID
+    elif id == 1:
+        return ActivationFunction.RELU
+    else:
+        return ActivationFunction.SOFTMAX
+
+
 class ResultJsonName:
     FILENAME = "filename"
     RESULTS = "results"
@@ -313,7 +322,13 @@ class NeuralNetwork:
         number_of_hidden_layers = int(input("Number of hidden layers: "))
         print()
         self.layer_sizes = [0] * (number_of_hidden_layers + 2)
-        self.layer_activation_functions = [ActivationFunction.SIGMOID] * (number_of_hidden_layers + 1)
+        self.layer_activation_functions = [0] * (number_of_hidden_layers + 1)
+        print("Activation function for each layer\n1) Sigmoid\n2) ReLu\n3) SoftMax")
+        for i in range(number_of_hidden_layers + 1):
+            activation_function_id = int(input("Connection {}: ".format(i)))
+            self.layer_activation_functions[i] = get_activation_function_by_id(activation_function_id)
+
+        # self.layer_activation_functions = [ActivationFunction.SIGMOID] * (number_of_hidden_layers + 1)
         print("Number of neurons for each hidden layer")
 
         for i in range(number_of_hidden_layers):
