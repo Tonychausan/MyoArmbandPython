@@ -138,8 +138,8 @@ class DataHandler:
                         j = emg_feature_data_id + number_of_coeffcient_subsets + i
                         emg_feature_data[j].append(feature_function(reconstructed_signals[i]))
 
-        #for i in range(len(emg_feature_data)):
-        #    emg_feature_data[i] = Utility.NormalizeArray(emg_feature_data[i])
+        for i in range(len(emg_feature_data)):
+            emg_feature_data[i] = Utility.NormalizeArray(emg_feature_data[i])
 
         return numpy.array(emg_feature_data).flatten()
 
@@ -165,7 +165,8 @@ class DataHandler:
             emg_data_features = numpy.append(self.wavelet_feature_extraxtion(), self.raw_emg_feature_extraxtion())
         else:
             emg_data_features = numpy.append([], self.raw_emg_feature_extraxtion())
-        return Utility.NormalizeArray(emg_data_features)
+        # return Utility.NormalizeArray(emg_data_features)
+        return emg_data_features
 
 
 class InputDataHandler(DataHandler):
