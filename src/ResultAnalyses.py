@@ -24,9 +24,15 @@ def print_results(number_of_gesture, filename, results, correct_gesture):
 def print_success_rate(success_list):
     print("###########################################################")
     print("Success Rate")
+    success_sum = [0, 0]
     for i in range(len(success_list)):
         if success_list[i][0] != 0:
             print('{:15s}\t{:4d} of {:4d} -> {:.2f}'.format(Gesture.gesture_to_string(i), success_list[i][1], success_list[i][0], 100 * success_list[i][1] / success_list[i][0]))
+        success_sum[0] += success_list[i][1]
+        success_sum[1] += success_list[i][0]
+
+    print()
+    print("Success rate: {:.2f}".format(100 * success_sum[0] / success_sum[1]))
 
 
 def get_data_from_json_object(json_obj):

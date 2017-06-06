@@ -20,6 +20,8 @@ import ResultAnalyses
 N_EPOCH = 5000
 learning_rate = 0.05
 
+#os.environ["CUDA_VISIBLE_DEVICES"]="-1"
+
 
 class ActivationFunction:
     SIGMOID = "Sigmoid"
@@ -553,6 +555,7 @@ class NeuralNetwork:
 
             results = sess.run(output, feed_dict={input_placeholder: test_inputs})
 
+
         tf.reset_default_graph()
         return results[0]
 
@@ -598,7 +601,8 @@ class NeuralNetwork:
         if len(result_file_list) > 1:
             for i in range(len(result_file_list)):
                 print("{})".format(i), result_file_list[i])
-            result_choice = input("Select a result file to use: ")
+            result_choice = int(input("Select a result file to use: "))
+
             try:
                 if not (result_choice >= len(result_file_list) or result_choice < 0):
                     result_choice = int(result_choice)
