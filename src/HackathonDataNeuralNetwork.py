@@ -45,7 +45,8 @@ def get_training_file_list(number_of_gestures):
 
         file = File(filename, folder)
 
-        if file.example_id <= 1500 and file.gesture < number_of_gestures:
+        # if file.example_id <= 1500 and file.gesture < number_of_gestures:
+        if file.example_id > 1500 and file.gesture < number_of_gestures:
             file_list.append(file)
 
     return file_list
@@ -60,7 +61,8 @@ def get_test_file_list(number_of_gestures):
 
         file = File(filename, folder)
 
-        if file.example_id > 1500 and file.gesture < number_of_gestures:
+        # if file.example_id > 1500 and file.gesture < number_of_gestures:
+        if file.example_id <= 1500 and file.gesture < number_of_gestures:
             file_list.append(file)
 
     return file_list
