@@ -33,6 +33,7 @@ def print_success_rate(success_list):
 
     print()
     print("Success rate: {:.2f}".format(100 * success_sum[0] / success_sum[1]))
+    return (100 * success_sum[0] / success_sum[1])
 
 
 def get_data_from_json_object(json_obj):
@@ -132,4 +133,5 @@ def filtered_analyse(number_of_gesture, json_data):
             print_results(number_of_gesture, filename, results, correct_gesture)
             print("Recognized:", [Gesture.gesture_to_string(x) for x in possible_gestures])
 
-    print_success_rate(success_list)
+    success_rate = print_success_rate(success_list)
+    print("${}$ & ${:.2f}$ & ${:.2f}$ & ${:.2f}$".format(gesture_margin, diff_margin, value_treshold, success_rate))
